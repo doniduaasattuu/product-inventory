@@ -1,26 +1,40 @@
 @startuml product inventory
 
-     entity user {
+    entity roles {
+        * role VARCHAR(50) <<PK>>
+        --
+    }
+
+    entity users {
         * id INT(11) <<PK>>
         --
         * name VARCHAR(100)
-        * email VARCHAR(100)
+        * email VARCHAR(100) <<unique>>
         * password VARCHAR(256)
-          phone_number
+          phone_number INT(2)
+          role VARCHAR(50) <<FK>>
           created_at TIMESTAMP NULL
-          updated_at TIMESTAMP NULL
+          updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
 
-    entity product {
+    entity categories {
+        * category VARCHAR(256) <<PK>>
+    }
+
+    entity products {
         * id VARCHAR(25) <<PK>> uniqid()
         --
         * name VARCHAR(100)
-        * price INT(11)
-        * qty INT(11)
+          category VARCHAR(256) <<FK>>
+          price INT(11) UNSIGNED 0
+          stock INT(11) UNSIGNED 0
+          admin_email INT(11) <<FK>>
           created_at TIMESTAMP NULL
-          updated_at TIMESTAMP NULL
+          updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
 
-   
+   roles }|--|| users : have
+   categories }|--|| products : have
+   users ||--|| products : insert by
 
 @enduml

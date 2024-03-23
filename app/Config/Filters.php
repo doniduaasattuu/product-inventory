@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Filters\OnlyGuest;
+use App\Filters\OnlyMember;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -24,6 +26,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'onlymember'    => OnlyMember::class,
+        'onlyguest'     => OnlyGuest::class,
     ];
 
     /**

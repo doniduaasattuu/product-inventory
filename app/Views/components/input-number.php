@@ -1,0 +1,1 @@
+<input class="form-control <?= $class ?? '' ?>" pattern="^[0-9]*$" title="Please enter a number" type="text" id="<?= $id ?? '' ?>" name="<?= $name ?? '' ?>" value="<?= set_value($value, null) ?>" maxlength="<?= $maxlength ?? '' ?>" placeholder="<?= $placeholder ?? '' ?>">

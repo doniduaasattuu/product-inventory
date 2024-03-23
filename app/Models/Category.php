@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class User extends Model
+class Category extends Model
 {
-    protected $table            = 'users';
-    protected $primaryKey       = 'id';
+    protected $table            = 'categories';
+    protected $primaryKey       = 'category';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'name', 'email', 'password', 'role', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['category'];
 
-    protected bool $allowEmptyInserts = true;
+    protected bool $allowEmptyInserts = false;
 
     // Dates
     protected $useTimestamps = true;

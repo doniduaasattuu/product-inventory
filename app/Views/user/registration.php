@@ -6,7 +6,13 @@
 
 <?= view('components/alert') ?>
 
-<form action="/login" method="POST">
+<form action="/registration" method="POST">
+
+    <div class="mb-3">
+        <?= view('components/label', ['label' => 'name']) ?>
+        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => 'name']) ?>
+        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
+    </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'email']) ?>
@@ -20,8 +26,14 @@
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'password']) ?>
     </div>
 
+    <div class="mb-3">
+        <?= view('components/label', ['label' => 'phone_number']) ?>
+        <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'value' => 'phone_number', 'maxlength' => '13']) ?>
+        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'phone_number']) ?>
+    </div>
+
     <?= view('components/button-primary', ['context' => 'Submit']) ?>
-    <?= view('components/input-help', ['message' => "Don't have an account ?, ", 'href' => '/registration', 'action' => 'Register here.']) ?>
+    <?= view('components/input-help', ['message' => 'Already have an account ?, ', 'href' => '/login', 'action' => 'Login here.']) ?>
 </form>
 
 <?= $this->endSection('content'); ?>

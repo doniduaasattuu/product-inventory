@@ -1,0 +1,1 @@
+<input class="form-control <?= $class ?? '' ?>" type="text" id="<?= $id ?? '' ?>" name="<?= $name ?? '' ?>" value="<?= set_value($value, null) ?>" maxlength="<?= $maxlength ?? '' ?>" placeholder="<?= $placeholder ?? '' ?>">
