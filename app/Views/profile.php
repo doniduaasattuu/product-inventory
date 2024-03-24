@@ -37,4 +37,47 @@
         </tbody>
     </table>
 </section>
+
+<section class="mb-4">
+    <h3 class="mb-3 fw-semibold">Update profile</h3>
+
+    <?= view('components/alert') ?>
+
+    <form action="/profile" method="POST">
+
+        <input type="hidden" id="id" name="id" class="form-control" value="<?= $user['id'] ?>">
+
+        <div class="mb-3">
+            <?= view('components/label', ['label' => 'name']) ?>
+            <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => $user['name']]) ?>
+            <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
+        </div>
+
+        <div class="mb-3">
+            <?= view('components/label', ['label' => 'email']) ?>
+            <?= view('components/input-text', ['id' => 'email', 'name' => 'email', 'value' => $user['email'],  'readonly' => 'readonly']) ?>
+            <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'email']) ?>
+        </div>
+
+        <div class="mb-3">
+            <?= view('components/label', ['label' => 'password']) ?>
+            <?= view('components/input-password', ['id' => 'password', 'name' => 'password']) ?>
+            <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'password']) ?>
+        </div>
+
+        <div class="mb-3">
+            <?= view('components/label', ['label' => 'confirm_new_password']) ?>
+            <?= view('components/input-password', ['id' => 'confirm_new_password', 'name' => 'confirm_new_password']) ?>
+            <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'confirm_new_password']) ?>
+        </div>
+
+        <div class="mb-3">
+            <?= view('components/label', ['label' => 'phone_number']) ?>
+            <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'maxlength' => '13', 'value' => $user['phone_number'],  'readonly' => null]) ?>
+            <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'phone_number']) ?>
+        </div>
+
+        <?= view('components/button-primary', ['context' => 'Update']) ?>
+    </form>
+</section>
 <?= $this->endSection('content') ?>

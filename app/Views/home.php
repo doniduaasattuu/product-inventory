@@ -89,14 +89,16 @@
 </div>
 
 <script>
-    function modalConfirm(url) {
-        let modal_url = document.getElementById("modal_url");
-        modal_url.setAttribute("href", url);
+    let filter = document.getElementById("filter");
+    let category = document.getElementById("category");
 
-        modal_button_cancel = document.getElementById("modal_button_cancel");
-        modal_button_cancel.onclick = () => {
-            modal_url.removeAttribute("href");
-        };
+    fillInputFilterFromUrlSearchParams(filter, category)
+
+    function doFilter() {
+        filterFunction(filter, category);
     }
+
+    filter.oninput = debounce(doFilter, 300);
+    category.oninput = debounce(doFilter, 0);
 </script>
 <?= $this->endSection('content') ?>

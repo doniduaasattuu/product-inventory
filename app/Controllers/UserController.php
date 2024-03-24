@@ -78,6 +78,7 @@ class UserController extends BaseController
 
             if (!is_null($user) && $password == $user->password) {
                 session()->set('user', [
+                    'id' => $user->id ?? null,
                     'name' => $user->name ?? null,
                     'email' => $user->email ?? null,
                     'phone_number' => $user->phone_number ?? null,
@@ -98,9 +99,29 @@ class UserController extends BaseController
         $db = db_connect();
         $columns = $db->getFieldData('users');
 
+        $user = model('User')->find(session('user')['id']);
+
         return view('profile', [
             'columns' => $columns,
+            'user' => $user,
         ]);
+    }
+
+    public function updateProfile()
+    {
+        $user = model('User')->find(session('user')['id']);
+
+        return $this->response->setJSON($this->request->getPost());
+
+        if (!is_null($user)) {
+            // UPDATE PROFILE
+            model('User')->where('id', $user['id'])->update($this->request->getPost());
+            session()->setFlashData('alert', ['message' => 'Your profile successfully updated.', 'variant' => 'alert-success']);
+            return redirect()->back()->withInput();
+        } else {
+            session()->setFlashData('alert', ['message' => 'User not found.', 'variant' => 'alert-info']);
+            return redirect()->back()->withInput();
+        }
     }
 
     public function logout()

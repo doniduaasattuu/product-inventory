@@ -17,9 +17,20 @@ class ProductController extends BaseController
 
     public function index(): string
     {
+        $filter = $this->request->getGet('filter');
+        $category = $this->request->getGet('category');
+
         $db = db_connect();
-        $products = model('Product')->findAll();
         $product_column = $db->getFieldData('products');
+        $products = model('Product')
+            ->when($filter, static function ($query, $filter) {
+                $query->like('name', "%{$filter}%");
+            })
+            ->when($category, static function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->orderBy('updated_at', 'DESC')
+            ->findAll();
 
         return view('home', [
             'categories' => $this->categories,
@@ -64,12 +75,20 @@ class ProductController extends BaseController
         }
 
         $product_id = $this->request->getPost('id');
-        $product = model('Product')->find($product_id);
+        $product = model('Product')->where('id', $product_id);
 
         if (!is_null($product)) {
-            // do update
-            session()->setFlashdata('alert', ['message' => 'Product successfully updated.', 'variant' => 'alert-success']);
-            return redirect()->back();
+
+            try {
+                // UPDATE PRODUCT
+                $validated = array_merge($validation->getValidated(), ['updated_at' => new RawSql('CURRENT_TIMESTAMP')]);
+                $product->update($product_id, $validated);
+                session()->setFlashdata('alert', ['message' => 'Product successfully updated.', 'variant' => 'alert-success']);
+                return redirect()->back();
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
+                session()->setFlashdata('alert', ['message' => $error->getMessage()]);
+                return redirect()->back();
+            }
         } else {
             session()->setFlashdata('alert', ['message' => 'Product not found.', 'variant' => 'alert-info']);
             return redirect()->back();
@@ -78,10 +97,11 @@ class ProductController extends BaseController
 
     public function productDelete($product_id)
     {
-        $product = model('Product')->where('id', $product_id);
+        $db = model('Product');
+        $product = $db->find($product_id);
 
         if (!is_null($product)) {
-            $product->delete();
+            $db->where('id', $product_id)->delete();
             session()->setFlashdata('alert', ['message' => 'Product successfully deleted.', 'variant' => 'alert-success']);
             return redirect()->back();
         } else {
@@ -119,11 +139,16 @@ class ProductController extends BaseController
 
         $validated = array_merge($validation->getValidated(), ['id' => uniqid(), 'created_at' => new RawSql('CURRENT_TIMESTAMP')]);
         $product = model('Product');
-        $product->insert($validated);
 
-        session()->setFlashdata('alert', ['message' => 'Product successfully saved.', 'variant' => 'alert-success']);
-        return redirect()->back();
-        // return $this->response->setJSON($validated);
+        try {
+            // INSERT PRODUCT
+            $product->insert($validated);
+            session()->setFlashdata('alert', ['message' => 'Product successfully saved.', 'variant' => 'alert-success']);
+            return redirect()->back();
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
+            session()->setFlashdata('alert', ['message' => $error->getMessage()]);
+            return redirect()->back();
+        }
     }
 
     public function categories()
@@ -139,7 +164,7 @@ class ProductController extends BaseController
         $validation = \Config\Services::validation();
 
         $validation->setRules([
-            'category' => ['required', 'is_unique[categories.category]'],
+            'category' => ['required', 'is_unique[categories.category]', 'min_length[3]', 'max_length[25]'],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -149,10 +174,28 @@ class ProductController extends BaseController
                 'validation' => $validation,
             ]);
         }
-
-        // return $this->response->setJSON($validation->getValidated());
         model('Category')->insert($validation->getValidated());
         session()->setFlashdata('alert', ['message' => 'Category successfully saved.', 'variant' => 'alert-success']);
         return $this->response->redirect('categories');
+    }
+
+    public function categoryDelete($category_id)
+    {
+        $db = model('Category');
+        $category = $db->find($category_id);
+
+        if (!is_null($category)) {
+            try {
+                $db->where('category', $category_id)->delete();
+                session()->setFlashdata('alert', ['message' => 'Category successfully deleted.', 'variant' => 'alert-success']);
+                return redirect()->back();
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
+                session()->setFlashdata('alert', ['message' => $error->getMessage(), 'variant' => 'alert-danger']);
+                return redirect()->back();
+            }
+        } else {
+            session()->setFlashdata('alert', ['message' => 'Category not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
     }
 }

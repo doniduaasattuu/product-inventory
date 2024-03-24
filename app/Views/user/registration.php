@@ -10,13 +10,13 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
-        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => 'name']) ?>
+        <?= view('components/input-text', ['id' => 'name', 'name' => 'name',]) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'email']) ?>
-        <?= view('components/input-text', ['id' => 'email', 'name' => 'email', 'value' => 'email']) ?>
+        <?= view('components/input-text', ['id' => 'email', 'name' => 'email',]) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'email']) ?>
     </div>
 
@@ -28,7 +28,7 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'phone_number']) ?>
-        <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'value' => 'phone_number', 'maxlength' => '13']) ?>
+        <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'maxlength' => '13']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'phone_number']) ?>
     </div>
 

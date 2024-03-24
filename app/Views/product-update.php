@@ -13,14 +13,14 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'id']) ?>
-        <?= view('components/input-text', ['id' => 'id', 'name' => 'id', 'readonly' => 'readonly', 'value' => $product['id']]) ?>
+        <?= view('components/input-text', ['id' => 'id', 'name' => 'id', 'value' => $product['id'], 'readonly' => 'readonly']); ?>
         <?= view('components/input-error-session', ['field' => 'id']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
-        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => $product['name']]) ?>
-        <?= view('components/input-error-session', ['field' => 'name']) ?>
+        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => $product['name'], 'readonly' => null]) ?>
+        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
     </div>
 
     <div class="mb-3">

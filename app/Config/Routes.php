@@ -18,7 +18,9 @@ $routes->group('/', ['filter' => 'onlyguest'], function ($routes) {
 $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     // HOME
     $routes->get('scanner', 'HomeController::scanner', ['as' => 'scanner']);
+    // USER
     $routes->get('profile', 'UserController::profile', ['as' => 'profile']);
+    $routes->post('profile', 'UserController::updateProfile');
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
     // PRODUCT
     $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
@@ -29,4 +31,5 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     // CATEGORY
     $routes->get('categories', 'ProductController::categories');
     $routes->post('category-new', 'ProductController::insertCategory');
+    $routes->get('category-delete/(:any)', 'ProductController::categoryDelete/$1');
 });

@@ -10,7 +10,7 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'email']) ?>
-        <?= view('components/input-text', ['id' => 'email', 'name' => 'email', 'value' => 'email']) ?>
+        <?= view('components/input-text', ['id' => 'email', 'name' => 'email']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'email']) ?>
     </div>
 

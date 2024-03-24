@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <form action="/search" method="POST" class="my-4 mb-xl-0 my-xl-0 d-flex" role="search">
-                <?= view('components/input-text', ['id' => 'search_product', 'name' => 'search_product', 'value' => 'search_product', 'placeholder' => 'Product id', 'maxlength' => '20', 'class' => 'me-2']) ?>
+                <?= view('components/input-text', ['id' => 'search_product', 'name' => 'search_product', 'placeholder' => 'Product id', 'maxlength' => '20', 'class' => 'me-2']) ?>
                 <button class="btn btn-outline-primary" type="submit">Search</button>
             </form>
 

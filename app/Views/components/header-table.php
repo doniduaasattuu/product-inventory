@@ -24,7 +24,7 @@
         <!-- FILTER -->
         <div class="col pe-1">
             <?= view('components/label', ['label' => 'filter']) ?>
-            <?= view('components/input-text', ['id' => 'filter', 'name' => 'filter', 'value' => 'filter', 'placeholder' => 'Product name']) ?>
+            <?= view('components/input-text', ['id' => 'filter', 'name' => 'filter', 'placeholder' => 'Product name']) ?>
         </div>
         <!-- FILTER CATEGORY -->
         <div class="col ps-1">
