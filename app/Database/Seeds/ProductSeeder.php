@@ -26,6 +26,46 @@ class ProductSeeder extends Seeder
                 'stock' => 35,
                 'created_at' => new RawSql('CURRENT_TIMESTAMP')
             ],
+            [
+                'id' => uniqid(),
+                'name' => 'Velg HSR R17',
+                'category' => 'Automotive',
+                'price' => 5300000,
+                'stock' => 126,
+                'created_at' => new RawSql('CURRENT_TIMESTAMP')
+            ],
+            [
+                'id' => uniqid(),
+                'name' => 'Madilog',
+                'category' => 'Book',
+                'price' => 0,
+                'stock' => 0,
+                'created_at' => new RawSql('CURRENT_TIMESTAMP')
+            ],
+            [
+                'id' => uniqid(),
+                'name' => 'Aksi Massa',
+                'category' => 'Book',
+                'price' => 0,
+                'stock' => 0,
+                'created_at' => new RawSql('CURRENT_TIMESTAMP')
+            ],
+            [
+                'id' => uniqid(),
+                'name' => 'Dari Penjara ke Penjara',
+                'category' => 'Book',
+                'price' => 0,
+                'stock' => 0,
+                'created_at' => new RawSql('CURRENT_TIMESTAMP')
+            ],
+            [
+                'id' => uniqid(),
+                'name' => 'Merdeka 100%',
+                'category' => 'Book',
+                'price' => 0,
+                'stock' => 0,
+                'created_at' => new RawSql('CURRENT_TIMESTAMP')
+            ],
         ];
 
         $this->db->table('products')->insertBatch($data);

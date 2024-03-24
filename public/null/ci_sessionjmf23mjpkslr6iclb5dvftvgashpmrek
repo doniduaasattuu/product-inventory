@@ -1,1 +1,0 @@
-__ci_last_regenerate|i:1711231924;_ci_previous_url|s:37:"http://localhost:8080/index.php/login";alert|a:1:{s:7:"message";s:31:"The email or password is wrong.";}__ci_vars|a:2:{s:5:"alert";s:3:"old";s:13:"_ci_old_input";s:3:"old";}_ci_old_input|a:2:{s:3:"get";a:0:{}s:4:"post";a:2:{s:5:"email";s:25:"doni.duaasattuu@gmail.com";s:8:"password";s:6:"ahasia";}}

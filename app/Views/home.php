@@ -4,6 +4,8 @@
 
 <?= view('components/header-table') ?>
 
+<?= view('components/alert') ?>
+
 <div class="overflow-y-auto">
     <div style="min-width: 1200px">
 
@@ -54,17 +56,17 @@
                                     </svg>
                                 </a>
                             </td>
-
                             <!-- DELETE -->
                             <td class="text-center" style="width: 40px">
-                                <a href="/product-delete/<?= $product['id'] ?>">
+                                <button data-bs-toggle="modal" data-bs-target="#modal_confirm" class="btn p-0 m-0" onclick="return modalConfirm('/product-delete/<?= $product['id'] ?>')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#dc3545" class="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                                     </svg>
-                                </a>
+                                </button>
                             </td>
                         <?php else : ?>
+                            <!-- INFO -->
                             <td class="text-center" style="width: 40px">
                                 <a href="/product-detail/<?= $product['id'] ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -85,4 +87,16 @@
         </table>
     </div>
 </div>
+
+<script>
+    function modalConfirm(url) {
+        let modal_url = document.getElementById("modal_url");
+        modal_url.setAttribute("href", url);
+
+        modal_button_cancel = document.getElementById("modal_button_cancel");
+        modal_button_cancel.onclick = () => {
+            modal_url.removeAttribute("href");
+        };
+    }
+</script>
 <?= $this->endSection('content') ?>

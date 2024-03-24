@@ -16,12 +16,17 @@ $routes->group('/', ['filter' => 'onlyguest'], function ($routes) {
 });
 
 $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
-    $routes->get('profile', 'UserController::profile', ['as' => 'profile']);
+    // HOME
     $routes->get('scanner', 'HomeController::scanner', ['as' => 'scanner']);
-
-    $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
-    $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
-    $routes->get('new-product', 'ProductController::newProduct', ['as' => 'new-product']);
-
+    $routes->get('profile', 'UserController::profile', ['as' => 'profile']);
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
+    // PRODUCT
+    $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
+    $routes->post('product-update', 'ProductController::updateProduct');
+    $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
+    $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
+    $routes->post('product-new', 'ProductController::insertProduct');
+    // CATEGORY
+    $routes->get('categories', 'ProductController::categories');
+    $routes->post('category-new', 'ProductController::insertCategory');
 });
