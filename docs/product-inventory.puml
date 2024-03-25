@@ -6,12 +6,12 @@
     }
 
     entity users {
-        * id INT(11) <<PK>>
+        * id INT(10) <<PK>>
         --
         * name VARCHAR(100)
         * email VARCHAR(100) <<unique>>
         * password VARCHAR(256)
-          phone_number INT(2)
+          phone_number VARCHAR(15)
           role VARCHAR(50) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP
@@ -28,13 +28,13 @@
           category VARCHAR(256) <<FK>>
           price INT(11) UNSIGNED 0
           stock INT(11) UNSIGNED 0
-          admin_email INT(11) <<FK>>
+          admin_email VARCHAR(100) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
 
    roles }|--|| users : have
    categories }|--|| products : have
-   users ||--|| products : insert by
+   users ||--|| products : inserted by
 
 @enduml

@@ -33,8 +33,8 @@ class CreateUser extends Migration
                 'null'           => false,
             ],
             'phone_number' => [
-                'type'           => 'INT',
-                'constraint'     => 2,
+                'type'           => 'varchar',
+                'constraint'     => 15,
                 'null'           => true,
             ],
             'role' => [

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <!-- Own script -->
     <script>
         function modalConfirm(url) {
             let modal_url = document.getElementById("modal_url");

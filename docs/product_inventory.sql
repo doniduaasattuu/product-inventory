@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2024 at 11:23 PM
+-- Generation Time: Mar 25, 2024 at 04:32 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -52,10 +52,10 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`, `batch`) VALUES
-(1, '2024-03-21-144759', 'App\\Database\\Migrations\\CreateRole', 'default', 'App', 1711211016, 1),
-(2, '2024-03-21-215126', 'App\\Database\\Migrations\\CreateUser', 'default', 'App', 1711211016, 1),
-(3, '2024-03-23-154149', 'App\\Database\\Migrations\\CreateCategory', 'default', 'App', 1711211016, 1),
-(4, '2024-03-23-154406', 'App\\Database\\Migrations\\CreateProduct', 'default', 'App', 1711211016, 1);
+(5, '2024-03-21-144759', 'App\\Database\\Migrations\\CreateRole', 'default', 'App', 1711337394, 1),
+(6, '2024-03-21-215126', 'App\\Database\\Migrations\\CreateUser', 'default', 'App', 1711337394, 1),
+(7, '2024-03-23-154149', 'App\\Database\\Migrations\\CreateCategory', 'default', 'App', 1711337394, 1),
+(8, '2024-03-23-154406', 'App\\Database\\Migrations\\CreateProduct', 'default', 'App', 1711337394, 1);
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,7 @@ INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`
 --
 
 CREATE TABLE `products` (
-  `id` varchar(25) NOT NULL DEFAULT '65ff0208db16f',
+  `id` varchar(25) NOT NULL DEFAULT '6600efb2653e5',
   `name` varchar(100) NOT NULL,
   `category` varchar(256) DEFAULT NULL,
   `price` int(11) UNSIGNED DEFAULT 0,
@@ -95,7 +95,7 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(256) NOT NULL,
-  `phone_number` int(2) DEFAULT NULL,
+  `phone_number` varchar(15) DEFAULT NULL,
   `role` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT current_timestamp()
@@ -147,7 +147,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`

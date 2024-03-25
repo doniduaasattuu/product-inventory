@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Database\RawSql;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class UserController extends BaseController
@@ -102,6 +103,7 @@ class UserController extends BaseController
         $user = model('User')->find(session('user')['id']);
 
         return view('profile', [
+            'title' => 'My profile',
             'columns' => $columns,
             'user' => $user,
         ]);
@@ -109,15 +111,41 @@ class UserController extends BaseController
 
     public function updateProfile()
     {
-        $user = model('User')->find(session('user')['id']);
+        $user_id = session()->get('user')['id'];
+        $validation = \Config\Services::validation();
 
-        return $this->response->setJSON($this->request->getPost());
+        $validation->setRules([
+            'name' => ['trim', 'required', 'min_length[3]', 'max_length[30]', 'alpha_space'],
+            'email' => ['trim', 'required', 'valid_email', 'is_not_unique[users.email]'],
+            'password' => ['trim', 'required', 'alpha_numeric_punct'],
+            'confirm_new_password' => ['trim', 'required', 'alpha_numeric_punct', 'matches[password]'],
+            'phone_number' => ['trim', 'permit_empty', 'is_natural'],
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        $validated = $validation->getValidated();
+        $user = model('User')->where('id', $user_id);
 
         if (!is_null($user)) {
-            // UPDATE PROFILE
-            model('User')->where('id', $user['id'])->update($this->request->getPost());
-            session()->setFlashData('alert', ['message' => 'Your profile successfully updated.', 'variant' => 'alert-success']);
-            return redirect()->back()->withInput();
+            try {
+
+                // UPDATE PROFILE
+                $user->update($user_id, [
+                    'name' => $validated['name'],
+                    'password' => $validated['password'],
+                    'phone_number' => $validated['phone_number'],
+                    'updated_at' => new RawSql('CURRENT_TIMESTAMP'),
+                ]);
+
+                session()->setFlashdata('alert', ['message' => 'Your profile successfully updated.', 'variant' => 'alert-success']);
+                return redirect()->back();
+            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
+                session()->setFlashdata('alert', ['message' => $error->getMessage()]);
+                return redirect()->back();
+            }
         } else {
             session()->setFlashData('alert', ['message' => 'User not found.', 'variant' => 'alert-info']);
             return redirect()->back()->withInput();
