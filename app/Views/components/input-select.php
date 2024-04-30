@@ -1,4 +1,4 @@
-<select class="form-select" name="<?= $name ?? '' ?>" id="<?= $id ?? '' ?>">
+<select class="form-select" name="<?= $name ?? '' ?>" id="<?= $id ?? '' ?>" <?= $disabled ?? null ?>>
     <?php if (isset($categories)) : ?>
         <option value=""></option>
         <?php foreach ($categories as $key => $value) : ?>

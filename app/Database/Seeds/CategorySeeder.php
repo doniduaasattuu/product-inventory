@@ -27,6 +27,9 @@ class CategorySeeder extends Seeder
             [
                 'category' => 'Automotive',
             ],
+            [
+                'category' => 'Photography',
+            ],
 
         ];
 

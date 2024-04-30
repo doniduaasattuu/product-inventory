@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\OnlyGuest;
+use App\Filters\OnlyManager;
 use App\Filters\OnlyMember;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
@@ -28,6 +29,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'onlymember'    => OnlyMember::class,
         'onlyguest'     => OnlyGuest::class,
+        'onlymanager'   => OnlyManager::class,
     ];
 
     /**

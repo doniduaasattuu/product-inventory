@@ -14,7 +14,7 @@ class Seed extends Seeder
         $db->table('users')->emptyTable();
         $db->table('roles')->emptyTable();
 
-        $this->call('RoleSeeder');
+        // $this->call('RoleSeeder');
         $this->call('UserSeeder');
         $this->call('CategorySeeder');
         $this->call('ProductSeeder');

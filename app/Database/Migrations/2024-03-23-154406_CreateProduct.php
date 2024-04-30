@@ -12,9 +12,8 @@ class CreateProduct extends Migration
         $this->forge->addField([
             'id' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 25,
+                'CONSTRAINT'     => 13,
                 'null'           => false,
-                'default'        => uniqid(),
             ],
             'name' => [
                 'type'           => 'VARCHAR',
@@ -47,6 +46,7 @@ class CreateProduct extends Migration
             ],
             'created_at' => [
                 'type'           => 'TIMESTAMP',
+                'default'        => new RawSql('CURRENT_TIMESTAMP'),
                 'null'           => true,
             ],
             'updated_at' => [
@@ -57,7 +57,7 @@ class CreateProduct extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('category', 'categories', 'category');
-        $this->forge->addForeignKey('admin_email', 'users', 'email');
+        $this->forge->addForeignKey('admin_email', 'users', 'email', onUpdate: 'no action', onDelete: 'no action');
         $this->forge->createTable('products');
     }
 

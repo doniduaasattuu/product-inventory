@@ -60,6 +60,12 @@
         </div>
 
         <div class="mb-3">
+            <?= view('components/label', ['label' => 'phone_number']) ?>
+            <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'maxlength' => '13', 'value' => $user['phone_number'],  'readonly' => null]) ?>
+            <?= view('components/input-error-session', ['field' => 'phone_number']) ?>
+        </div>
+
+        <div class="mb-3">
             <?= view('components/label', ['label' => 'password']) ?>
             <?= view('components/input-password', ['id' => 'password', 'name' => 'password']) ?>
             <?= view('components/input-error-session', ['field' => 'password']) ?>
@@ -69,12 +75,6 @@
             <?= view('components/label', ['label' => 'confirm_new_password']) ?>
             <?= view('components/input-password', ['id' => 'confirm_new_password', 'name' => 'confirm_new_password']) ?>
             <?= view('components/input-error-session', ['field' => 'confirm_new_password']) ?>
-        </div>
-
-        <div class="mb-3">
-            <?= view('components/label', ['label' => 'phone_number']) ?>
-            <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'maxlength' => '13', 'value' => $user['phone_number'],  'readonly' => null]) ?>
-            <?= view('components/input-error-session', ['field' => 'phone_number']) ?>
         </div>
 
         <?= view('components/button-primary', ['context' => 'Update']) ?>

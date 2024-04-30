@@ -14,25 +14,25 @@
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
         <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'required' => 'required']) ?>
-        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
+        <?= view('components/input-error-session', ['field' => 'name']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'category']) ?>
         <?= view('components/input-select', ['id' => 'category', 'name' => 'category', 'categories' => $categories ?? null]) ?>
-        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'category']) ?>
+        <?= view('components/input-error-session', ['field' => 'category']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'price']) ?>
         <?= view('components/input-number', ['id' => 'price', 'name' => 'price', 'maxlength' => '8']) ?>
-        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'price']) ?>
+        <?= view('components/input-error-session', ['field' => 'price']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'stock']) ?>
         <?= view('components/input-number', ['id' => 'stock', 'name' => 'stock', 'maxlength' => '6']) ?>
-        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'stock']) ?>
+        <?= view('components/input-error-session', ['field' => 'stock']) ?>
     </div>
 
     <?= view('components/button-primary', ['context' => 'Submit']) ?>

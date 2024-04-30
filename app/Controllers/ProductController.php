@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\RawSql;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -24,15 +25,18 @@ class ProductController extends BaseController
         $product_column = $db->getFieldData('products');
         $products = model('Product')
             ->when($filter, static function ($query, $filter) {
-                $query->like('name', "%{$filter}%");
+                $query
+                    ->orLike('id', "%{$filter}%")
+                    ->orLike('name', "%{$filter}%")
+                    ->orLike('stock', "%{$filter}%");
             })
             ->when($category, static function ($query, $category) {
                 $query->where('category', $category);
             })
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('name')
             ->findAll();
 
-        return view('home', [
+        return view('products/home', [
             'categories' => $this->categories,
             'product_column' => $product_column,
             'products' => $products,
@@ -41,21 +45,61 @@ class ProductController extends BaseController
 
     public function productDetail($product_id)
     {
-        return 'detail ' . $product_id;
-        return view('product-detail', [
-            'product_id' => $product_id,
-        ]);
+        $product = model('Product')->find($product_id);
+
+        if (null != $product) {
+            return view('products/product-detail', [
+                'title' => 'Product detail',
+                'categories' => model('Category')->findAll(),
+                'product' => $product,
+            ]);
+        } else {
+            session()->setFlashdata('alert', ['message' => 'Product not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
     }
 
     public function productUpdate($product_id)
     {
         $product = model('Product')->find($product_id);
 
-        return view('product-update', [
-            'title' => 'Update product',
-            'categories' => $this->categories,
-            'product' => $product,
-        ]);
+        if ($product) {
+            return view('products/product-update', [
+                'title' => 'Update product',
+                'categories' => $this->categories,
+                'product' => $product,
+            ]);
+        } else {
+            session()->setFlashdata('alert', ['message' => 'Product not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
+    }
+
+    public function scannedProduct($product_id)
+    {
+        $id = $this->request->getPost('search');
+
+        $product = model('Product')->find($product_id);
+
+        if ($product) {
+
+            $view = 'products/product-detail';
+            $title = 'Product detail';
+
+            if (session()->get('user')) {
+                $view = 'products/product-update';
+                $title = 'Update product';
+            }
+
+            return view($view, [
+                'title' => $title,
+                'categories' => $this->categories,
+                'product' => $product,
+            ]);
+        } else {
+            session()->setFlashdata('alert', ['message' => 'Product not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
     }
 
     public function updateProduct()
@@ -64,7 +108,7 @@ class ProductController extends BaseController
 
         $validation->setRules([
             'id' => ['required', 'is_not_unique[products.id]'],
-            'name' => ['required', 'min_length[3]', 'max_length[25]'],
+            'name' => ['required', 'min_length[3]', 'max_length[100]'],
             'category' => ['required'],
             'price' => ['permit_empty'],
             'stock' => ['permit_empty'],
@@ -112,7 +156,7 @@ class ProductController extends BaseController
 
     public function productNew()
     {
-        return view('product-new', [
+        return view('products/product-new', [
             'title' => 'New product',
             'categories' => $this->categories,
         ]);
@@ -123,18 +167,19 @@ class ProductController extends BaseController
         $validation = \Config\Services::validation();
 
         $validation->setRules([
-            'name' => ['required', 'min_length[3]', 'max_length[25]'],
+            'name' => ['required', 'min_length[3]', 'max_length[100]'],
             'category' => ['required'],
             'price' => ['permit_empty'],
             'stock' => ['permit_empty'],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
-            return view('product-new', [
-                'title' => 'New product',
-                'categories' => $this->categories,
-                'validation' => $validation,
-            ]);
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+            // return view('products/product-new', [
+            //     'title' => 'New product',
+            //     'categories' => $this->categories,
+            //     'validation' => $validation,
+            // ]);
         }
 
         $validated = array_merge($validation->getValidated(), ['id' => uniqid(), 'created_at' => new RawSql('CURRENT_TIMESTAMP')]);
@@ -147,54 +192,6 @@ class ProductController extends BaseController
             return redirect()->back();
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
             session()->setFlashdata('alert', ['message' => $error->getMessage()]);
-            return redirect()->back();
-        }
-    }
-
-    public function categories()
-    {
-        return view('categories', [
-            'title' => 'Categories',
-            'categories' => $this->categories,
-        ]);
-    }
-
-    public function insertCategory()
-    {
-        $validation = \Config\Services::validation();
-
-        $validation->setRules([
-            'category' => ['required', 'is_unique[categories.category]', 'min_length[3]', 'max_length[25]'],
-        ]);
-
-        if (!$validation->withRequest($this->request)->run()) {
-            return view('categories', [
-                'title' => 'Categories',
-                'categories' => $this->categories,
-                'validation' => $validation,
-            ]);
-        }
-        model('Category')->insert($validation->getValidated());
-        session()->setFlashdata('alert', ['message' => 'Category successfully saved.', 'variant' => 'alert-success']);
-        return $this->response->redirect('categories');
-    }
-
-    public function categoryDelete($category_id)
-    {
-        $db = model('Category');
-        $category = $db->find($category_id);
-
-        if (!is_null($category)) {
-            try {
-                $db->where('category', $category_id)->delete();
-                session()->setFlashdata('alert', ['message' => 'Category successfully deleted.', 'variant' => 'alert-success']);
-                return redirect()->back();
-            } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
-                session()->setFlashdata('alert', ['message' => $error->getMessage(), 'variant' => 'alert-danger']);
-                return redirect()->back();
-            }
-        } else {
-            session()->setFlashdata('alert', ['message' => 'Category not found.', 'variant' => 'alert-info']);
             return redirect()->back();
         }
     }

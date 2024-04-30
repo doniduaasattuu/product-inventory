@@ -152,6 +152,50 @@ class UserController extends BaseController
         }
     }
 
+    public function users()
+    {
+        $users = model('User')->findAll();
+        $db = db_connect();
+        $query = $db->query('SELECT name, email, password, role FROM users');
+        $user_columns = $query->getFieldData('users');
+
+        return view('user/users', [
+            'users' => $users,
+            'title' => 'Users',
+            'user_columns' => $user_columns,
+        ]);
+    }
+
+    public function userReset($user_id)
+    {
+        $db = model('User');
+        $user = $db->find($user_id);
+
+        if (!is_null($user)) {
+            $db->update($user_id, ['password' => 'rahasia']);
+            session()->setFlashdata('alert', ['message' => 'User password reset successfully.', 'variant' => 'alert-success']);
+            return redirect()->back();
+        } else {
+            session()->setFlashdata('alert', ['message' => 'User not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
+    }
+
+    public function userDelete($user_id)
+    {
+        $db = model('User');
+        $user = $db->find($user_id);
+
+        if (!is_null($user)) {
+            $db->where('id', $user_id)->delete();
+            session()->setFlashdata('alert', ['message' => 'User successfully deleted.', 'variant' => 'alert-success']);
+            return redirect()->back();
+        } else {
+            session()->setFlashdata('alert', ['message' => 'User not found.', 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
+    }
+
     public function logout()
     {
         session()->destroy();

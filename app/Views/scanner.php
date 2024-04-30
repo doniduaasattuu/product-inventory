@@ -1,6 +1,5 @@
 <?= $this->extend('layouts/app') ?>
 
-<?= $this->section('content') ?>
 <style>
     .mycontainer {
         display: flex;
@@ -13,6 +12,10 @@
     }
 </style>
 
+<?= $this->section('content') ?>
+
+<?= view('components/alert') ?>
+
 <div class="container py-4 flex justify-content-center items-center">
     <div class="mycontainer py-3">
         <div id="reader"></div>
@@ -24,7 +27,7 @@
     function onScanSuccess(decodedText, decodedResult) {
 
         // /product/65fe600cce6a9
-        window.location = `/product/${decodedText}`;
+        window.location = `/scanned-product/${decodedText}`;
 
         html5QrcodeScanner.clear();
     }

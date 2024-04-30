@@ -10,19 +10,19 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
-        <?= view('components/input-text', ['id' => 'name', 'name' => 'name',]) ?>
+        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'email']) ?>
-        <?= view('components/input-text', ['id' => 'email', 'name' => 'email',]) ?>
+        <?= view('components/input-email', ['id' => 'email', 'name' => 'email', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'email']) ?>
     </div>
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'password']) ?>
-        <?= view('components/input-password', ['id' => 'password', 'name' => 'password']) ?>
+        <?= view('components/input-password', ['id' => 'password', 'name' => 'password', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'password']) ?>
     </div>
 

@@ -20,7 +20,7 @@
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
         <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'value' => $product['name'], 'readonly' => null]) ?>
-        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
+        <?= view('components/input-error-session', ['field' => 'name']) ?>
     </div>
 
     <div class="mb-3">

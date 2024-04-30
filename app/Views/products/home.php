@@ -14,7 +14,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <?php foreach ($product_column as $column) : ?>
-                        <?php if ($column->name == 'id' || $column->name == 'admin_email') : ?>
+                        <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at') : ?>
                             <?php continue; ?>
                         <?php else : ?>
                             <th scope="col"><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
@@ -34,18 +34,37 @@
             <tbody>
 
                 <?php
-                $i = 1;
+                $numb = 1;
                 foreach ($products as $product) :
                 ?>
                     <tr>
-                        <th scope="row"><?= $i ?></th>
+                        <th scope="row"><?= $numb ?></th>
+
                         <?php foreach ($product_column as $column) : ?>
-                            <?php if ($column->name == 'id' || $column->name == 'admin_email') : ?>
+                            <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at') : ?>
                                 <?php continue; ?>
+                                <!-- PRICE -->
+                            <?php elseif ($column->name == 'price') : ?>
+                                <?php
+                                $temp = '';
+                                $hundred = 0;
+                                for ($i = strlen($product[$column->name]) - 1; $i >= 0; $i--) {
+                                    if ($hundred == 3) {
+                                        $temp = $product[$column->name][$i] . '.' . $temp;
+                                        $hundred = 0;
+                                    } else {
+                                        $temp = $product[$column->name][$i] . $temp;
+                                    }
+                                    $hundred++;
+                                }
+                                ?>
+                                <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
+                                <!-- PRICE -->
                             <?php else : ?>
                                 <td scope="col"><?= ucfirst(str_replace('_', ' ', $product[$column->name])) ?></td>
                             <?php endif; ?>
                         <?php endforeach; ?>
+
                         <?php if (session()->get('user')) : ?>
                             <!-- EDIT -->
                             <td class="text-center" style="width: 40px">
@@ -77,7 +96,7 @@
                         <?php endif; ?>
                     </tr>
                 <?php
-                    $i++;
+                    $numb++;
                 endforeach;
                 ?>
 
