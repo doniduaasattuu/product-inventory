@@ -9,7 +9,7 @@
 
 <?= view('components/alert') ?>
 
-<form action="/product-new" method="POST">
+<form action="/product-new" method="POST" enctype="multipart/form-data">
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
@@ -19,7 +19,7 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'category']) ?>
-        <?= view('components/input-select', ['id' => 'category', 'name' => 'category', 'categories' => $categories ?? null]) ?>
+        <?= view('components/input-select', ['id' => 'category', 'name' => 'category', 'categories' => $categories ?? null, 'selected' => set_value('category')]) ?>
         <?= view('components/input-error-session', ['field' => 'category']) ?>
     </div>
 
@@ -33,6 +33,12 @@
         <?= view('components/label', ['label' => 'stock']) ?>
         <?= view('components/input-number', ['id' => 'stock', 'name' => 'stock', 'maxlength' => '6']) ?>
         <?= view('components/input-error-session', ['field' => 'stock']) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= view('components/label', ['label' => 'image']) ?>
+        <?= view('components/input-file', ['id' => 'image', 'name' => 'image']) ?>
+        <?= view('components/input-error-session', ['field' => 'image']) ?>
     </div>
 
     <?= view('components/button-primary', ['context' => 'Submit']) ?>

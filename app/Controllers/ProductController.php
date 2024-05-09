@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+helper('filesystem');
+
 use App\Controllers\BaseController;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\RawSql;
@@ -112,6 +114,7 @@ class ProductController extends BaseController
             'category' => ['required'],
             'price' => ['permit_empty'],
             'stock' => ['permit_empty'],
+            'image' => ['max_size[image,2000]', 'is_image[image]'],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -126,7 +129,16 @@ class ProductController extends BaseController
             try {
                 // UPDATE PRODUCT
                 $validated = array_merge($validation->getValidated(), ['updated_at' => new RawSql('CURRENT_TIMESTAMP')]);
+                $image = $this->request->getFile('image');
+
+                if ($image->isValid()) {
+                    $product_name = $product_id . '.' . strtolower($image->getClientExtension());
+                    $image->move('images/products', $product_name);
+                    $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')['email']]);
+                }
+
                 $product->update($product_id, $validated);
+
                 session()->setFlashdata('alert', ['message' => 'Product successfully updated.', 'variant' => 'alert-success']);
                 return redirect()->back();
             } catch (\CodeIgniter\Database\Exceptions\DatabaseException $error) {
@@ -146,6 +158,7 @@ class ProductController extends BaseController
 
         if (!is_null($product)) {
             $db->where('id', $product_id)->delete();
+            delete_files('/public/images/products/' . $product['attachment']);
             session()->setFlashdata('alert', ['message' => 'Product successfully deleted.', 'variant' => 'alert-success']);
             return redirect()->back();
         } else {
@@ -171,18 +184,22 @@ class ProductController extends BaseController
             'category' => ['required'],
             'price' => ['permit_empty'],
             'stock' => ['permit_empty'],
+            'image' => ['max_size[image,2000]', 'is_image[image]'],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
             return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-            // return view('products/product-new', [
-            //     'title' => 'New product',
-            //     'categories' => $this->categories,
-            //     'validation' => $validation,
-            // ]);
         }
 
+        $image = $this->request->getFile('image');
         $validated = array_merge($validation->getValidated(), ['id' => uniqid(), 'created_at' => new RawSql('CURRENT_TIMESTAMP')]);
+
+        if ($image->isValid()) {
+            $product_name = $validated['id'] . '.' . strtolower($image->getClientExtension());
+            $image->move('images/products', $product_name);
+            $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')['email']]);
+        }
+
         $product = model('Product');
 
         try {

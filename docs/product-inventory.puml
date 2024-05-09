@@ -28,6 +28,7 @@
           category VARCHAR(256) <<FK>>
           price INT(11) UNSIGNED 0
           stock INT(11) UNSIGNED 0
+          attachment VARCHAR(255) 
           admin_email VARCHAR(100) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP

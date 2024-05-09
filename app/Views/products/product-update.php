@@ -9,7 +9,7 @@
 
 <?= view('components/alert') ?>
 
-<form action="/product-update" method="POST">
+<form action="/product-update" method="POST" enctype="multipart/form-data">
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'id']) ?>
@@ -39,6 +39,21 @@
         <?= view('components/label', ['label' => 'stock']) ?>
         <?= view('components/input-number', ['id' => 'stock', 'name' => 'stock', 'value' => $product['stock'], 'maxlength' => '6']) ?>
         <?= view('components/input-error-session', ['field' => 'stock']) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= view('components/label', ['label' => 'image']) ?>
+        <div class="input-group">
+            <?= view('components/input-file', ['id' => 'image', 'name' => 'image']) ?>
+            <?php if ($product['attachment']) : ?>
+                <button class="btn btn-outline-secondary" type="button">
+                    <a class="text-reset text-decoration-none" href="/images/products/<?= $product['attachment'] ?>">
+                        Existing
+                    </a>
+                </button>
+            <?php endif; ?>
+        </div>
+        <?= view('components/input-error-session', ['field' => 'image']) ?>
     </div>
 
     <?= view('components/button-primary', ['context' => 'Update']) ?>

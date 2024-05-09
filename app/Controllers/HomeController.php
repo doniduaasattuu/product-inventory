@@ -18,13 +18,15 @@ class HomeController extends BaseController
         if (null != $product) {
 
             $view = 'products/product-detail';
+            $title = 'Detail product';
 
             if (session()->get('user')) {
                 $view = 'products/product-update';
+                $title = 'Update product';
             }
 
             return view($view, [
-                'title' => 'Update product',
+                'title' => $title,
                 'categories' => model('Category')->findAll(),
                 'product' => $product,
             ]);

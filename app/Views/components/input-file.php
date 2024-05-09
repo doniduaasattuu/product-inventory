@@ -1,0 +1,1 @@
+<input class="form-control <?= $class ?? '' ?>" type="file" accept="<?= $accept ?? 'image/*' ?>" id="<?= $id ?? '' ?>" name="<?= $name ?? '' ?>">

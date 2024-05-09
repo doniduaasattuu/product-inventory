@@ -937,6 +937,15 @@ class ProductSeeder extends Seeder
                 'created_at' => '2024-04-28 22:32:01',
                 'updated_at' => '2024-04-28 22:32:01',
             ],
+            [
+                'id' => '662f1ad9aacd3',
+                'name' => "Madilog (Tan Malaka)",
+                'category' => 'Book',
+                'price' => 98000,
+                'stock' => 1,
+                'created_at' => '2024-04-28 22:32:01',
+                'updated_at' => '2024-04-28 22:32:01',
+            ],
         ];
         $this->db->table('products')->insertBatch($data);
     }

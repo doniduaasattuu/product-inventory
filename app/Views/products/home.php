@@ -6,16 +6,22 @@
 
 <?= view('components/alert') ?>
 
+<?php if (!session()->get('user')) : ?>
+    <div class="alert alert-warning" role="alert">You're not logged in yet, <a class="alert-link fw-semibold" href="/login">login here.</a></div>
+<?php endif; ?>
+
 <div class="overflow-y-auto">
-    <div style="min-width: 1200px">
+    <div style="min-width: 1500px">
 
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th style="width: 50px;" scope="col">#</th>
                     <?php foreach ($product_column as $column) : ?>
                         <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at') : ?>
                             <?php continue; ?>
+                        <?php elseif ($column->name == 'attachment') : ?>
+                            <th style="text-align: center" scope="col">Image</th>
                         <?php else : ?>
                             <th scope="col"><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
                         <?php endif; ?>
@@ -60,6 +66,21 @@
                                 ?>
                                 <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
                                 <!-- PRICE -->
+                            <?php elseif ($column->name == 'attachment') : ?>
+                                <!-- ATTACHMENT -->
+                                <?php if ($product[$column->name] != null) : ?>
+                                    <td style="text-align: center">
+                                        <a href="/images/products/<?= $product[$column->name] ?>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                <?php else : ?>
+                                    <td></td>
+                                <?php endif; ?>
+                                <!-- ATTACHMENT -->
                             <?php else : ?>
                                 <td scope="col"><?= ucfirst(str_replace('_', ' ', $product[$column->name])) ?></td>
                             <?php endif; ?>

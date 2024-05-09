@@ -30,7 +30,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th style="width: 50px;" scope="col">#</th>
                     <th>Category</th>
 
                     <!-- ACTION BUTTON -->
