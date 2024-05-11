@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\OnlyAdmin;
 use App\Filters\OnlyGuest;
 use App\Filters\OnlyManager;
 use App\Filters\OnlyMember;
@@ -29,6 +30,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'onlymember'    => OnlyMember::class,
         'onlyguest'     => OnlyGuest::class,
+        'onlyadmin'     => OnlyAdmin::class,
         'onlymanager'   => OnlyManager::class,
     ];
 

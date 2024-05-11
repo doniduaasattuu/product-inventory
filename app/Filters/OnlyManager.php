@@ -25,7 +25,9 @@ class OnlyManager implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (null != session()->get('user') && session()->get('user')['role'] == 'Manager') {
+        $user = session()->get('user');
+
+        if (null != $user && $user->role == 'Manager') {
             return null;
         }
         session()->setFlashdata('alert', ['message' => "Your'e not allowed.", 'variant' => 'alert-info']);

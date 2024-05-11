@@ -1,12 +1,12 @@
 @startuml product inventory
 
     entity roles {
-        * role VARCHAR(50) <<PK>>
+        * role VARCHAR(25) <<PK>>
         --
     }
 
     entity users {
-        * id INT(10) <<PK>>
+        * id INT(10) <<PK>> AUTO INCREMENT
         --
         * name VARCHAR(100)
         * email VARCHAR(100) <<unique>>
@@ -18,24 +18,83 @@
     }
 
     entity categories {
-        * category VARCHAR(256) <<PK>>
+        * category VARCHAR(50) <<PK>>
     }
 
     entity products {
         * id VARCHAR(25) <<PK>> uniqid()
         --
         * name VARCHAR(100)
-          category VARCHAR(256) <<FK>>
-          price INT(11) UNSIGNED 0
-          stock INT(11) UNSIGNED 0
+          category VARCHAR(50) <<FK>>
+          price INT(10) UNSIGNED 0
+          stock INT(10) UNSIGNED 0
           attachment VARCHAR(255) 
           admin_email VARCHAR(100) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
 
+    entity suppliers {
+        * id INT(10) <<PK>> AUTO INCREMENT
+        --
+        * name VARCHAR(256)
+    }
+
+    entity purchases {
+        * id VARCHAR(25) <<PK>> uniqid('pc_')
+        --
+          supplier INT(10) <<FK>>
+          status ENUM ['Pending', 'Sent']
+        * admin_email VARCHAR(100) <<FK>>
+        * total INT(10)
+          created_at TIMESTAMP CURRENT_TIMESTAMP
+          updated_at TIMESTAMP CURRENT_TIMESTAMP
+    }
+
+    entity purchase_details {
+        * id INT(10) <<PK>> AUTO INCREMENT
+        --
+        * purchase_id VARCHAR(25) <<FK>>
+        * product_id VARCHAR(25) <<FK>>
+        * product_name VARCHAR(100)
+          product_category VARCHAR(50)
+        * product_price INT(10) UNSIGNED
+        * quantity INT(10) UNSIGNED
+        * sub_total INT(10) UNSIGNED
+    }
+
+    ' entity customers {
+    '     * id INT(10) <<PK>> AUTO INCREMENT
+    '     --
+    '     * name VARCHAR(256)
+    ' }
+
+    ' entity sale_details {
+    '     * id VARCHAR(25) <<PK>> uniqid('pcd_)
+    '     --
+    '     * product_id VARCHAR(25) <<FK>>
+    '     * product_name
+    '     * product_category
+    '     * quantity INT(10)
+    ' }
+
+    ' entity sales {
+    '     * id VARCHAR(25) <<PK>> uniqid('sl_')
+    '     --
+    '     * sale_detail VARCHAR(25) <<FK>>
+    '       customer INT(10) <<FK>>
+    '     * admin_email VARCHAR(100) <<FK>>
+    '       status ENUM ['Pending', 'Sent']
+    '       created_at TIMESTAMP NULL
+    '       updated_at TIMESTAMP CURRENT_TIMESTAMP
+    ' }
+
    roles }|--|| users : have
    categories }|--|| products : have
    users ||--|| products : inserted by
+   suppliers ||--|{ purchases : supplied
+   purchases ||--|{ purchase_details : have
+   users ||--|{ purchases : create
+   products }|--|| purchase_details : have
 
 @enduml

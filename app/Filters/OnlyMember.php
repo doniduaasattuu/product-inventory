@@ -25,8 +25,10 @@ class OnlyMember implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!session()->get('user')) {
-            return redirect()->route('login');
+        $user = session()->get('user');
+
+        if (!$user) {
+            // return redirect()->route('login');
         }
         return null;
     }

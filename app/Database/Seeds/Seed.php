@@ -9,6 +9,8 @@ class Seed extends Seeder
     public function run()
     {
         $db = db_connect();
+        $db->table('suppliers')->emptyTable();
+        $db->table('purchases')->emptyTable();
         $db->table('products')->emptyTable();
         $db->table('categories')->emptyTable();
         $db->table('users')->emptyTable();
@@ -18,5 +20,7 @@ class Seed extends Seeder
         $this->call('UserSeeder');
         $this->call('CategorySeeder');
         $this->call('ProductSeeder');
+        $this->call('SupplierSeeder');
+        $this->call('PurchaseSeeder');
     }
 }

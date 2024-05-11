@@ -25,22 +25,31 @@ $routes->group('/', ['filter' => 'onlyguest'], function ($routes) {
 
 // ONLY MEMBER
 $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
+
     // USER
     $routes->get('profile', 'UserController::profile', ['as' => 'profile']);
     $routes->post('profile', 'UserController::updateProfile');
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
+
+    // ONLY ADMIN
+    $routes->group('', ['filter' => 'onlyadmin'], function ($routes) {
+        $routes->get('purchase', 'PurchaseController::index');
+    });
+
     // ONLY MANAGER
     $routes->group('', ['filter' => 'onlymanager'], function ($routes) {
         $routes->get('user-delete/(:any)', 'UserController::userDelete/$1');
         $routes->get('user-reset/(:any)', 'UserController::userReset/$1');
         $routes->get('users', 'UserController::users', ['as' => 'users']);
     });
+
     // PRODUCT
     $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
     $routes->post('product-update', 'ProductController::updateProduct');
     $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
     $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
     $routes->post('product-new', 'ProductController::insertProduct');
+
     // CATEGORY
     $routes->get('categories', 'CategoryController::categories');
     $routes->post('category-new', 'CategoryController::insertCategory');

@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class OnlyGuest implements FilterInterface
+class OnlyAdmin implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -25,12 +25,7 @@ class OnlyGuest implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        $user = session()->get('user');
-
-        if ($user) {
-            return redirect()->route('/');
-        }
-        return null;
+        //
     }
 
     /**
@@ -47,6 +42,12 @@ class OnlyGuest implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
+        $user = session()->get('user');
+
+        if (null != $user && $user->role == 'Admin' || 'Manager') {
+            return null;
+        }
+        session()->setFlashdata('alert', ['message' => "Your'e not authorized.", 'variant' => 'alert-info']);
+        return redirect()->back();
     }
 }

@@ -1,0 +1,1 @@
+<input class="form-control <?= $class ?? '' ?>" type="date" id="<?= $id ?? '' ?>" name="<?= $name ?? '' ?>" value="<?= $value ?? set_value($name, null) ?>">

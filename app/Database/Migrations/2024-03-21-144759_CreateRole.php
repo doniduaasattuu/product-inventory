@@ -11,7 +11,7 @@ class CreateRole extends Migration
         $this->forge->addField([
             'role' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 50,
+                'constraint'     => 25,
                 'null'           => false,
             ],
         ]);
