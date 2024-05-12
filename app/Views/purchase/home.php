@@ -14,6 +14,8 @@
     </div>
 </section>
 
+<?= view('components/modal') ?>
+
 <!-- PURCHASE DATA -->
 <div class="overflow-y-auto">
     <div style="min-width: 1500px">
@@ -23,7 +25,7 @@
                 <tr>
                     <th style="width: 30px;" scope="col">#</th>
                     <?php foreach ($purchase_column as $column) : ?>
-                        <th><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
+                        <th><?= ucfirst(str_replace('_', ' ', $column->name == 'admin_email' ? 'Admin' : $column->name)) ?></th>
                     <?php endforeach; ?>
 
                     <!-- ACTION BUTTON -->
@@ -45,6 +47,25 @@
                         <?php foreach ($purchase_column as $column) : ?>
                             <?php if ($column->name == 'id') : ?>
                                 <td style="font-family: Monospace;" scope="row"><?= $purchase[$column->name] ?></td>
+                            <?php elseif ($column->name == 'admin_email') : ?>
+                                <td scope="row"><?php echo db_connect()->table('users')->where('email', $purchase[$column->name])->get()->getFirstRow()->name ?></td>
+                            <?php elseif ($column->name == 'total') : ?>
+                                <!-- TOTAL -->
+                                <?php
+                                $temp = '';
+                                $hundred = 0;
+                                for ($i = strlen($purchase[$column->name]) - 1; $i >= 0; $i--) {
+                                    if ($hundred == 3) {
+                                        $temp = $purchase[$column->name][$i] . '.' . $temp;
+                                        $hundred = 0;
+                                    } else {
+                                        $temp = $purchase[$column->name][$i] . $temp;
+                                    }
+                                    $hundred++;
+                                }
+                                ?>
+                                <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
+                                <!-- TOTAL -->
                             <?php else : ?>
                                 <td scope="row"><?= $purchase[$column->name] ?></td>
                             <?php endif; ?>
@@ -92,10 +113,19 @@
 </div>
 
 <script>
+    const action_button = document.getElementById('action_button');
+    const start_date = document.getElementById('start_date');
+    const end_date = document.getElementById('end_date');
+    action_button.onclick = () => {
+        filterFunction(start_date, end_date);
+    }
+
+    fillInputFilterFromUrlSearchParams(start_date, end_date)
+
     const created_at = <?php echo json_encode($created_at) ?>;
-    const email = <?php echo json_encode($email) ?>;
+    const admin = <?php echo json_encode($admin) ?>;
     const footer = (tooltipItems) => {
-        return 'By: ' + email[tooltipItems[0].dataIndex];
+        return 'By: ' + admin[tooltipItems[0].dataIndex];
     };
 
     // PURCHASES
@@ -107,8 +137,10 @@
             datasets: [{
                 data: <?php echo json_encode($total) ?>,
                 label: "Total",
-                borderColor: "rgb(171, 210, 182)",
-                backgroundColor: "rgb(171, 210, 182)",
+                borderColor: "rgb(46, 196, 182)",
+                backgroundColor: "rgb(46, 196, 182)",
+                // borderColor: "rgb(255, 58, 32)",
+                // backgroundColor: "rgb(255, 58, 32)",
                 fill: false,
                 tension: 0.3,
             }, ],
@@ -139,8 +171,12 @@
                     stack: 'demo',
                     ticks: {
                         callback: function(value, index, ticks) {
-                            value = value / 1000000;
-                            return value + " Jt";
+                            if (value != null && value > 1000000) {
+                                value = value / 1000000;
+                                return value + " Jt";
+                            } else {
+                                return value;
+                            }
                         }
                     },
                     // ticks: {

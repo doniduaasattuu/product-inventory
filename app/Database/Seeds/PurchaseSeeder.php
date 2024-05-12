@@ -14,7 +14,7 @@ class PurchaseSeeder extends Seeder
                 'supplier' => null,
                 'status' => 'Sent',
                 'admin_email' => 'doni.duaasattuu@gmail.com',
-                'total' => 12000000,
+                'total' => 62596000,
                 'created_at' => '2024-05-01 21:47:12',
                 'updated_at' => '2024-05-01 21:47:12',
             ],

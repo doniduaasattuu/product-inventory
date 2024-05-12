@@ -34,7 +34,7 @@
                 if ($user) : ?>
 
                     <!-- TRANSACTION START -->
-                    <?php if ($user->role == 'Admin' || $user->role == 'Manager') : ?>
+                    <?php if ($user->role == 'Admin' || 'Manager') : ?>
                         <li class="nav-item dropdown">
                             <a class="text-white nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg class="mb-1 me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">

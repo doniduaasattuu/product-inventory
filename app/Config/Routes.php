@@ -34,6 +34,7 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     // ONLY ADMIN
     $routes->group('', ['filter' => 'onlyadmin'], function ($routes) {
         $routes->get('purchase', 'PurchaseController::index');
+        $routes->get('purchase-detail/(:any)', 'PurchaseController::purchaseDetail/$1');
     });
 
     // ONLY MANAGER
