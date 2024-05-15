@@ -92,12 +92,10 @@ class UserController extends BaseController
         $db = db_connect();
         $columns = $db->getFieldData('users');
 
-        $user = model('User')->find(session('user')['id']);
-
-        return view('profile', [
+        return view('user/profile', [
             'title' => 'My profile',
             'columns' => $columns,
-            'user' => $user,
+            'user' => (array) session()->get('user'),
         ]);
     }
 

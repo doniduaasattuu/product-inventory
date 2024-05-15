@@ -11,7 +11,7 @@
 <?php endif; ?>
 
 <div class="overflow-y-auto">
-    <div style="min-width: 1500px">
+    <div style="min-width: 1300px">
 
         <table class="table table-hover">
             <thead>

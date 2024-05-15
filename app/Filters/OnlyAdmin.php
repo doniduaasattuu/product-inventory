@@ -44,10 +44,11 @@ class OnlyAdmin implements FilterInterface
     {
         $user = session()->get('user');
 
-        if (null != $user && $user->role == 'Admin' || 'Manager') {
+        if (null != $user && (($user->role == 'Admin') || ($user->role == 'Manager'))) {
             return null;
         }
-        session()->setFlashdata('alert', ['message' => "Your'e not authorized.", 'variant' => 'alert-info']);
+
+        session()->setFlashdata('modal', ['message' => "Your'e not authorized."]);
         return redirect()->back();
     }
 }

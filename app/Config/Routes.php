@@ -1,10 +1,15 @@
 <?php
 
+use App\Controllers\PurchaseController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
  * @var RouteCollection $routes
  */
+$routes->get('/current', function () {
+    return response()->setJSON(session()->get('user'));
+});
+
 $routes->get('/', 'ProductController::index');
 // SCANNER
 $routes->get('scanner', 'HomeController::scanner', ['as' => 'scanner']);
@@ -31,10 +36,17 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     $routes->post('profile', 'UserController::updateProfile');
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
 
-    // ONLY ADMIN
+    // ONLY ADMIN OR MANAGER
     $routes->group('', ['filter' => 'onlyadmin'], function ($routes) {
         $routes->get('purchase', 'PurchaseController::index');
+        $routes->get('purchase-new', 'PurchaseController::purchaseNew');
+        $routes->get('purchase-order/(:any)', 'PurchaseController::purchaseOrderAdd/$1');
+        $routes->get('purchase-order', 'PurchaseController::purchaseOrder');
+        $routes->get('purchase-order-delete', 'PurchaseController::purchaseOrderDelete');
+
+        $routes->post('purchase-detail', 'PurchaseController::purchaseDetailSubmit');
         $routes->get('purchase-detail/(:any)', 'PurchaseController::purchaseDetail/$1');
+        $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
     });
 
     // ONLY MANAGER

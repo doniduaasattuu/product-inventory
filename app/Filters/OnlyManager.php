@@ -30,7 +30,8 @@ class OnlyManager implements FilterInterface
         if (null != $user && $user->role == 'Manager') {
             return null;
         }
-        session()->setFlashdata('alert', ['message' => "Your'e not allowed.", 'variant' => 'alert-info']);
+
+        session()->setFlashdata('modal', ['message' => "Your'e not allowed."]);
         return redirect('/');
     }
 

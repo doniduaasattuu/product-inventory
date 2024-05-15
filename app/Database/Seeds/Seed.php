@@ -9,6 +9,7 @@ class Seed extends Seeder
     public function run()
     {
         $db = db_connect();
+        $db->table('purchase_orders')->emptyTable();
         $db->table('purchase_details')->emptyTable();
         $db->table('purchases')->emptyTable();
         $db->table('suppliers')->emptyTable();

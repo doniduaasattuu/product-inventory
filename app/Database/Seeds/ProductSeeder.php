@@ -946,6 +946,15 @@ class ProductSeeder extends Seeder
                 'created_at' => '2024-04-28 22:32:01',
                 'updated_at' => '2024-04-28 22:32:01',
             ],
+            [
+                'id' => '662f1ad9aa123',
+                'name' => "Abjad Cinta",
+                'category' => 'Book',
+                'price' => 0,
+                'stock' => 4,
+                'created_at' => '2024-04-28 22:32:01',
+                'updated_at' => '2024-04-28 22:32:01',
+            ],
         ];
         $this->db->table('products')->insertBatch($data);
     }

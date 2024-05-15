@@ -85,6 +85,7 @@
 
     <?= view('components/navbar') ?>
     <?= view('components/modal-confirm') ?>
+    <?= view('components/modal') ?>
 
     <div class="container-md">
         <div class="py-4">

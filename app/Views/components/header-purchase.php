@@ -19,11 +19,11 @@
 
     <div class="row mb-3">
         <!-- FILTER -->
-        <div class="col pe-1">
+        <div class="col col-5 col-sm-6 pe-1">
             <?= view('components/label', ['label' => 'start_date']) ?>
             <?= view('components/input-date', ['id' => 'start_date', 'name' => 'start_date']) ?>
         </div>
-        <div class="col ps-1">
+        <div class="col col-7 col-sm-6 ps-1">
             <?= view('components/label', ['label' => 'end_date']) ?>
             <div class="input-group">
                 <?= view('components/input-date', ['id' => 'end_date', 'name' => 'end_date']) ?>
@@ -34,6 +34,6 @@
                 </div>
             </div>
         </div>
-        <!-- FILTER CATEGORY -->
+        <?= view('components/input-help', ['message' => 'Default value is year to date.', 'action' => null]) ?>
     </div>
 </section>

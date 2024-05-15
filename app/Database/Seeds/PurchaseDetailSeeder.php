@@ -25,7 +25,7 @@ class PurchaseDetailSeeder extends Seeder
                 'product_category' => 'Gadget',
                 'product_price' => 18499000,
                 'quantity' => 1,
-                'sub_total' => 36998000,
+                'sub_total' => 18499000,
             ],
         ];
 

@@ -63,6 +63,16 @@
         * sub_total INT(10) UNSIGNED
     }
 
+    entity purchase_orders {
+        * id INT(10) <<PK>> AUTO INCREMENT
+        --
+        * product_id VARCHAR(25) <<FK>>
+        * product_name VARCHAR(100)
+          product_category VARCHAR(50)
+        * product_price INT(10) UNSIGNED
+        * quantity INT(10) UNSIGNED
+    }
+
     ' entity customers {
     '     * id INT(10) <<PK>> AUTO INCREMENT
     '     --
@@ -96,5 +106,6 @@
    purchases ||--|{ purchase_details : have
    users ||--|{ purchases : create
    products }|--|| purchase_details : have
+   products }|--|| purchase_orders
 
 @enduml
