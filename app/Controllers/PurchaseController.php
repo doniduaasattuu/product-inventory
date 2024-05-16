@@ -4,13 +4,17 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use Carbon\Carbon;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class PurchaseController extends BaseController
 {
     private $categories;
+    private $purchase_column;
 
     public function __construct()
     {
+
+        $this->purchase_column = db_connect()->getFieldData('purchases');
         $this->categories = model('Category')->findAll();
     }
 
@@ -18,10 +22,9 @@ class PurchaseController extends BaseController
     {
         $filter = $this->request->getGet('filter');
         $start_date = $this->request->getGet('start_date') ?? Carbon::now()->addDays(-30);
-        $end_date = $this->request->getGet('end_date') ?? Carbon::now()->toDateString();
+        $end_date = $this->request->getGet('end_date') ?? Carbon::now()->addDays(1)->toDateString();
 
         $purchase_model = model('Purchase');
-        $purchase_column = db_connect()->getFieldData('purchases');
         $purchases = $purchase_model
             ->when($filter, static function ($query, $filter) {
                 $query
@@ -46,7 +49,7 @@ class PurchaseController extends BaseController
         }
 
         return view('purchase/home', [
-            'purchase_column' => $purchase_column,
+            'purchase_column' => $this->purchase_column,
             'purchases' => $purchases,
             'created_at' => $created_at,
             'admin' => $admin,
@@ -109,12 +112,14 @@ class PurchaseController extends BaseController
         $product_column = $db->getFieldData('products');
         $products = model('Product')
             ->when($filter, static function ($query, $filter) {
+                $filter = trim($filter);
                 $query
                     ->orLike('id', "%{$filter}%")
                     ->orLike('name', "%{$filter}%")
                     ->orLike('stock', "%{$filter}%");
             })
             ->when($category, static function ($query, $category) {
+                $category = trim($category);
                 $query->where('category', $category);
             })
             ->orderBy('name')
@@ -195,6 +200,7 @@ class PurchaseController extends BaseController
             'title' => 'Purchase order',
             'purchase_order_column' => $purchase_order_column,
             'purchase_orders' => $purchase_orders,
+            'action' => '/purchase-detail',
         ]);
 
         return response()->setJSON(model('PurchaseOrder')->findAll());
@@ -210,20 +216,76 @@ class PurchaseController extends BaseController
     public function purchaseDetailSubmit()
     {
         $data_request = $this->request->getPost('data');
-
-        return response()->setJSON($data_request);
-        $db = db_connect();
-
+        // return response()->setJSON($this->request->getPost());
         $purchase_id = uniqid('pc_');
 
+        $total = 0;
+        $data = [];
+        foreach ($data_request as $dt) {
+            $dt['purchase_id'] = $purchase_id;
+            $total += (int) $dt['sub_total'];
+
+            array_push($data, $dt);
+        }
+
+        $db = db_connect();
+
+        $db->transStart();
         $db->table('purchases')->insert([
             'id' => $purchase_id,
             'supplier' => null,
             'status' => 'Pending',
             'admin_email' => session()->get('user')->email,
-            'total' => '$total,'
+            'total' => $total,
         ]);
 
-        $db->table('purchase_details')->insertBatch($data_request);
+        $db->table('purchase_details')->insertBatch($data);
+        $db->table('purchase_orders')->truncate();
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            $db->transRollback();
+            session()->setFlashdata('modal', ['message' => 'Error occured.']);
+            return redirect('purchase');
+        } else {
+            session()->setFlashdata('modal', ['message' => 'Saved successfully.']);
+            return redirect('purchase');
+        }
+    }
+
+    public function purchaseUpdate($purchase_id)
+    {
+        $purchase = model('Purchase')->find($purchase_id);
+        $purchase_detail = model('PurchaseDetail')->where('purchase_id', $purchase_id)->findAll();
+        $admin_email = model('User')->select('email')->findAll();
+
+        if ($purchase_detail) {
+            return view('purchase/update', [
+                'purchase_id' => $purchase_id,
+                'purchase' => $purchase,
+                'purchase_column' => $this->purchase_column,
+                'admin_email' => $admin_email,
+            ]);
+        } else {
+            session()->setFlashdata('modal', ['message' => 'Purchase detail not found.']);
+            return redirect()->back();
+        }
+    }
+
+    public function purchaseUpdateEnd()
+    {
+        $data = $this->request->getPost();
+        $purchase_id = $data['id'];
+
+        $purchase = model('Purchase')->find($purchase_id);
+        $purchase_detail = model('PurchaseDetail')->where('purchase_id', $purchase_id)->findAll();
+
+        model('Purchase')->update($purchase_id, $data);
+
+        return response()->setJSON([
+            'old' => $purchase['updated_at'],
+            'new' => $data['updated_at'],
+        ]);
+        return response()->setJSON($data);
     }
 }

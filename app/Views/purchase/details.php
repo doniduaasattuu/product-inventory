@@ -18,6 +18,8 @@
                     <?php foreach ($purchase_details_column as $column) : ?>
 
                         <?php if ($column->name == 'id' || $column->name == 'purchase_id') : continue; ?>
+                        <?php elseif ($column->name == 'quantity') : ?>
+                            <th style="text-align: center;"><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
                         <?php else : ?>
                             <th><?= ucfirst(str_replace('_', ' ', $column->name == 'admin_email' ? 'Admin' : $column->name)) ?></th>
                         <?php endif;  ?>
@@ -38,7 +40,7 @@
 
                             <?php if ($column->name == 'id' || $column->name == 'purchase_id') : continue; ?>
                             <?php elseif ($column->name == 'product_id') : ?>
-                                <td style="font-family: Monospace;" scope="row"><a href="<?= '/product-update/' . $purchase_detail[$column->name] ?>"><?= $purchase_detail[$column->name] ?></a></td>
+                                <td style="font-family: Monospace;" scope="row"><?= $purchase_detail[$column->name] ?></td>
                             <?php elseif ($column->name == 'product_price' || $column->name == 'sub_total') : ?>
                                 <!-- TOTAL -->
                                 <?php
@@ -55,6 +57,8 @@
                                 }
                                 ?>
                                 <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
+                            <?php elseif ($column->name == 'quantity') : ?>
+                                <td style="text-align: center;" scope="row"><?= $purchase_detail[$column->name] ?></td>
                             <?php else : ?>
                                 <td scope="row"><?= $purchase_detail[$column->name] ?></td>
                             <?php endif; ?>
@@ -89,6 +93,8 @@
                             ?>
                             <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
 
+                        <?php elseif ($column->name == 'quantity') : ?>
+                            <th style="text-align: center;">Total</th>
                         <?php else : ?>
                             <td></td>
                         <?php endif; ?>

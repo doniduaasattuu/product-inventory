@@ -46,7 +46,9 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
 
         $routes->post('purchase-detail', 'PurchaseController::purchaseDetailSubmit');
         $routes->get('purchase-detail/(:any)', 'PurchaseController::purchaseDetail/$1');
+        $routes->get('purchase-update/(:any)', 'PurchaseController::purchaseUpdate/$1');
         $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
+        $routes->post('purchase-update', 'PurchaseController::purchaseUpdateEnd');
     });
 
     // ONLY MANAGER

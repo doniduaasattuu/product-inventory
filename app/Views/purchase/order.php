@@ -9,7 +9,7 @@
 </div>
 
 <section>
-    <form action="/purchase-detail" method="POST">
+    <form action="<?= $action ?>" method="POST">
         <div class="overflow-y-auto mb-3">
             <div style="min-width: 1000px">
                 <table class="table table-hover">
@@ -17,10 +17,10 @@
                         <tr>
                             <th style="width: 30px;" scope="col">#</th>
                             <?php foreach ($purchase_order_column as $column) : ?>
-                                <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at' || $column->name == 'updated_at' || $column->name == 'attachment') : ?>
+                                <?php if ($column->name == 'id') : ?>
                                     <?php continue; ?>
-                                <?php elseif ($column->name == 'attachment') : ?>
-                                    <th style="text-align: center" scope="col">Image</th>
+                                <?php elseif ($column->name == 'quantity') : ?>
+                                    <th style="text-align: center" scope="col"><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
                                 <?php else : ?>
                                     <th scope="col"><?= ucfirst(str_replace('_', ' ', $column->name)) ?></th>
                                 <?php endif; ?>
@@ -62,6 +62,9 @@
                                         <input type="hidden" name="<?= "data[$data][product_price]" ?>" value="<?= $purchase_order[$column->name] ?>">
                                         <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
                                         <!-- PRODUCT PRICE -->
+                                    <?php elseif ($column->name == 'quantity') : ?>
+                                        <input type="hidden" name="<?= "data[$data][$column->name]" ?>" value="<?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?>">
+                                        <td style="text-align: center;" scope="col"><?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?></td>
                                     <?php
                                     else : ?>
                                         <input type="hidden" name="<?= "data[$data][$column->name]" ?>" value="<?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?>">
@@ -104,13 +107,16 @@
                                 <?php if ($column->name == 'id') : ?>
                                     <?php continue; ?>
 
-                                <?php elseif ($column->name == 'product_price') : ?>
+                                <?php elseif ($column->name == 'quantity') : ?>
+                                    <th style="text-align: center;">Total</th>
+
+                                <?php else : ?>
+                                    <td></td>
 
                                 <?php endif; ?>
-                                <td></td>
                             <?php endforeach; ?>
 
-                            <!-- SUB TOTAL -->
+                            <!-- TOTAL -->
                             <?php
                             $temp = '';
                             $string_total = (string) $total;
@@ -126,14 +132,14 @@
                             }
                             ?>
                             <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
-                            <!-- SUB TOTAL -->
+                            <!-- TOTAL -->
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="d-flex">
+        <div class="mb-3">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
 

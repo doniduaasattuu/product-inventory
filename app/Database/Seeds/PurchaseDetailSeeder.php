@@ -10,7 +10,7 @@ class PurchaseDetailSeeder extends Seeder
     {
         $data = [
             [
-                'purchase_id' => 'pc_663f7811645f5 ',
+                'purchase_id' => 'pc_663f7811645f5',
                 'product_id' => '662f1ad9aa70b',
                 'product_name' => 'Apple MacBook Air 13 M1 Chip 256GB SSD 8GB',
                 'product_category' => 'Computer',
@@ -19,7 +19,7 @@ class PurchaseDetailSeeder extends Seeder
                 'sub_total' => 44097000,
             ],
             [
-                'purchase_id' => 'pc_663f7811645f5 ',
+                'purchase_id' => 'pc_663f7811645f5',
                 'product_id' => '662f1ad9aa72d',
                 'product_name' => 'iPhone 12 Pro 128 GB',
                 'product_category' => 'Gadget',
