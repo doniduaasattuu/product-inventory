@@ -10,11 +10,13 @@ class PurchaseController extends BaseController
 {
     private $categories;
     private $purchase_column;
+    private $purchase_detail_column;
 
     public function __construct()
     {
 
         $this->purchase_column = db_connect()->getFieldData('purchases');
+        $this->purchase_detail_column = db_connect()->getFieldData('purchase_details');
         $this->categories = model('Category')->findAll();
     }
 
@@ -265,6 +267,9 @@ class PurchaseController extends BaseController
                 'purchase' => $purchase,
                 'purchase_column' => $this->purchase_column,
                 'admin_email' => $admin_email,
+                'purchase_detail' => $purchase_detail,
+                'purchase_detail_column' => $this->purchase_detail_column,
+                'status' => ['Pending', 'Approved', 'Done'],
             ]);
         } else {
             session()->setFlashdata('modal', ['message' => 'Purchase detail not found.']);
@@ -277,15 +282,49 @@ class PurchaseController extends BaseController
         $data = $this->request->getPost();
         $purchase_id = $data['id'];
 
-        $purchase = model('Purchase')->find($purchase_id);
-        $purchase_detail = model('PurchaseDetail')->where('purchase_id', $purchase_id)->findAll();
+        $purchase_model = model('Purchase');
+        $purchase_detail_model = model('PurchaseDetail');
+        $product_model = model('Product');
 
-        model('Purchase')->update($purchase_id, $data);
+        $purchase = $purchase_model->find($purchase_id);
 
-        return response()->setJSON([
-            'old' => $purchase['updated_at'],
-            'new' => $data['updated_at'],
-        ]);
-        return response()->setJSON($data);
+        // return response()->setJSON($data);
+
+        if (isset($data['status']) && $data['status'] == 'Done') {
+
+            // UPDATE DATA PRODUCT STOCK FROM PURCHASE ORDER
+            $purchase_detail = $purchase_detail_model->where('purchase_id', $purchase_id)->findAll();
+
+            foreach ($purchase_detail as $detail) {
+
+                $product_id = $detail['product_id'];
+                $new_quantity = $detail['quantity'];
+
+                $current_product = $product_model->find($product_id);
+                // DO UPDATE STOCK IF FOUNDED
+                if ($current_product) {
+
+                    $new_product_data = [
+                        'stock' => $current_product['stock'] + $new_quantity,
+                    ];
+
+                    $product_model->update($current_product['id'], $new_product_data);
+                }
+            }
+
+            // UPDATE DATA PURCHASE
+            $data['updated_at'] = Carbon::now()->toDateTimeString();
+            $purchase_model->update($purchase['id'], $data);
+
+            session()->setFlashdata('alert', ['message' => 'Successfully update purchase and product stock.', 'variant' => 'alert-success']);
+            return redirect()->back();
+        } else {
+            // UPDATE DATA PURCHASE
+            $data['updated_at'] = Carbon::now()->toDateTimeString();
+            $purchase_model->update($purchase['id'], $data);
+
+            session()->setFlashdata('alert', ['message' => 'Successfully updated.', 'variant' => 'alert-success']);
+            return redirect()->back();
+        }
     }
 }

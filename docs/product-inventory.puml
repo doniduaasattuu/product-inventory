@@ -44,7 +44,7 @@
         * id VARCHAR(25) <<PK>> uniqid('pc_')
         --
           supplier INT(10) <<FK>>
-          status ENUM ['Pending', 'Sent']
+          status ENUM ['Pending', 'Approved', 'Done']
         * admin_email VARCHAR(100) <<FK>>
         * total INT(10)
           created_at TIMESTAMP CURRENT_TIMESTAMP

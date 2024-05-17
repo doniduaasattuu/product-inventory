@@ -63,8 +63,11 @@
                                         <td scope="col"><?= 'Rp' . ucfirst(str_replace('_', ' ', $temp)) . ',-' ?></td>
                                         <!-- PRODUCT PRICE -->
                                     <?php elseif ($column->name == 'quantity') : ?>
-                                        <input type="hidden" name="<?= "data[$data][$column->name]" ?>" value="<?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?>">
-                                        <td style="text-align: center;" scope="col"><?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?></td>
+                                        <td style="text-align: center; width: 30px;" scope="col">
+                                            <input class="form-control p-0 px-1 m-0 quantity" type="number" id="qty_<?= $purchase_order['product_id'] ?>" name="<?= "data[$data][$column->name]" ?>" value="<?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?>">
+                                        </td>
+                                        <!-- <td style="text-align: center;" scope="col"><?php // echo ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) 
+                                                                                            ?></td> -->
                                     <?php
                                     else : ?>
                                         <input type="hidden" name="<?= "data[$data][$column->name]" ?>" value="<?= ucfirst(str_replace('_', ' ', $purchase_order[$column->name])) ?>">
@@ -145,5 +148,15 @@
 
     </form>
 </section>
+
+<script>
+    let quantities = document.getElementsByClassName('quantity');
+    for (let quantity of quantities) {
+        console.log(quantity);
+        quantity.onchange = () => {
+            alert(quantity.getAttribute('id'));
+        }
+    }
+</script>
 
 <?= $this->endSection('content') ?>

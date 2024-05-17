@@ -22,7 +22,7 @@ class CreatePurchase extends Migration
             ],
             'status' => [
                 'type'           => 'ENUM',
-                'constraint'     => ['Pending', 'Sent'],
+                'constraint'     => ['Pending', 'Approved', 'Done'],
                 'null'           => true,
             ],
             'admin_email' => [
