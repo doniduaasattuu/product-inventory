@@ -4,14 +4,6 @@ namespace App\Controllers;
 
 class HomeController extends BaseController
 {
-
-    public function current()
-    {
-        $user = session()->get('user');
-        return response()->setJSON($user);
-        // return response()->setJSON(session()->get('user')->role);
-    }
-
     public function scanner(): string
     {
         return view('scanner');

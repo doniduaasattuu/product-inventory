@@ -2,24 +2,65 @@
 
 <?= $this->section('content') ?>
 
-<?= view('components/header-products') ?>
+<!-- SALES NEW -->
+<div class="mb-4">
+    <h2 class="fw-semibold"><?= $title ?? '' ?></h2>
+    <?= view('components/breadcrumb', ['base' => ['link' => '/sales', 'name' => 'Sales'], 'action' => 'New']) ?>
+</div>
+
+<?php if (isset($sale_order) && null != $sale_order) : ?>
+    <div class="mb-3">
+        <div class="btn-group dropend">
+            <button type="button" class="btn btn-success">
+                <a class="text-white nav-link d-inline-block" aria-current="page" href="/sales-order">
+                    <div>
+                        <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                        </svg>
+                        Sales order
+                    </div>
+                </a>
+            </button>
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <div style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modal_confirm" class="px-2" onclick="return modalConfirm('/sales-order-delete')">
+                        Delete sales order
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>
 
 <?= view('components/alert') ?>
 
-<?php if (!session()->get('user')) : ?>
-    <div class="alert alert-warning" role="alert">You're not logged in yet, <a class="alert-link fw-semibold" href="/login">login here.</a></div>
-<?php endif; ?>
+<div class="row mb-3">
+    <!-- FILTER -->
+    <div class="col pe-1">
+        <?= view('components/label', ['label' => 'filter']) ?>
+        <?= view('components/input-text', ['id' => 'filter', 'name' => 'filter', 'placeholder' => 'Product name']) ?>
+    </div>
+    <!-- FILTER CATEGORY -->
+    <div class="col ps-1">
+        <?= view('components/label', ['label' => 'category']) ?>
+        <?= view('components/input-select', ['id' => 'category', 'name' => 'category', 'categories' => $categories ?? null]) ?>
+    </div>
+</div>
 
-<?php if ($products != null && count($products) > 0) : ?>
+<section>
     <div class="overflow-y-auto">
-        <div style="min-width: 1300px">
+        <div style="min-width: 1000px">
 
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th style="width: 30px;" scope="col">#</th>
                         <?php foreach ($product_column as $column) : ?>
-                            <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at') : ?>
+                            <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at' || $column->name == 'updated_at' || $column->name == 'attachment') : ?>
                                 <?php continue; ?>
                             <?php elseif ($column->name == 'attachment') : ?>
                                 <th style="text-align: center" scope="col">Image</th>
@@ -29,12 +70,7 @@
                         <?php endforeach; ?>
 
                         <!-- ACTION BUTTON -->
-                        <?php if (session()->get('user')) : ?>
-                            <th scope="col">Update</th>
-                            <th scope="col">Delete</th>
-                        <?php else : ?>
-                            <th scope="col">Detail</th>
-                        <?php endif; ?>
+                        <th scope="col">Add</th>
 
                     </tr>
                 </thead>
@@ -48,7 +84,7 @@
                             <td scope="row"><?= $numb ?></td>
 
                             <?php foreach ($product_column as $column) : ?>
-                                <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at') : ?>
+                                <?php if ($column->name == 'id' || $column->name == 'admin_email' || $column->name == 'created_at' || $column->name == 'updated_at' || $column->name == 'attachment') : ?>
                                     <?php continue; ?>
                                     <!-- PRICE -->
                                 <?php elseif ($column->name == 'price') : ?>
@@ -87,35 +123,15 @@
                                 <?php endif; ?>
                             <?php endforeach; ?>
 
-                            <?php if (session()->get('user')) : ?>
-                                <!-- EDIT -->
-                                <td class="text-center" style="width: 40px">
-                                    <a href="/product-update/<?= $product['id'] ?>">
-                                        <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#0d6efd" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                                <!-- DELETE -->
-                                <td class="text-center" style="width: 40px">
-                                    <button data-bs-toggle="modal" data-bs-target="#modal_confirm" class="btn p-0 m-0" onclick="return modalConfirm('/product-delete/<?= $product['id'] ?>')">
-                                        <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#dc3545" class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            <?php else : ?>
-                                <!-- INFO -->
-                                <td class="text-center" style="width: 40px">
-                                    <a href="/product-detail/<?= $product['id'] ?>">
-                                        <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
-                                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm8.93 4.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            <?php endif; ?>
+                            <!-- ADD -->
+                            <td class="text-center" style="width: 40px; cursor: pointer;">
+                                <a href="/sales-order/<?= $product['id'] ?>">
+                                    <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#0d6efd" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg>
+                                </a>
+                            </td>
                         </tr>
                     <?php
                         $numb++;
@@ -126,10 +142,8 @@
             </table>
         </div>
     </div>
-<?php else : ?>
-    <?= view('components/not-found-svg', ['not_found_message' => 'Products not found.']) ?>
-<?php endif; ?>
 
+</section>
 
 <script>
     let filter = document.getElementById("filter");
@@ -144,4 +158,6 @@
     filter.oninput = debounce(doFilter, 300);
     category.oninput = debounce(doFilter, 0);
 </script>
+
+
 <?= $this->endSection('content') ?>
