@@ -46,7 +46,7 @@ class PurchaseController extends BaseController
         $user_table = db_connect()->table('users');
         foreach ($purchases as $purchase) {
             array_push($created_at, Carbon::create($purchase['created_at'])->format('d/m/y'));
-            array_push($admin, $user_table->where('email', 'doni.duaasattuu@gmail.com')->get()->getFirstRow()->name);
+            array_push($admin, $user_table->where('email', $purchase['admin_email'])->get()->getFirstRow()->name);
             array_push($total, $purchase['total']);
         }
 
@@ -204,8 +204,6 @@ class PurchaseController extends BaseController
             'purchase_orders' => $purchase_orders,
             'action' => '/purchase-detail',
         ]);
-
-        return response()->setJSON(model('PurchaseOrder')->findAll());
     }
 
     public function purchaseOrderDeleteProduct($product_id)
@@ -238,7 +236,6 @@ class PurchaseController extends BaseController
 
             array_push($data, $dt);
         }
-
 
         if ($total != $total_request) {
             session()->setFlashdata('alert', ['message' => 'Something wrong.', 'variant' => 'alert-warning']);

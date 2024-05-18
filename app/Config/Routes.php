@@ -50,6 +50,17 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
         $routes->get('purchase-update/(:any)', 'PurchaseController::purchaseUpdate/$1');
         $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
         $routes->post('purchase-update', 'PurchaseController::purchaseUpdateEnd');
+
+        $routes->get('sales', 'SalesController::index');
+        $routes->get('sales-new', 'SalesController::salesNew');
+        $routes->get('sales-order/(:any)', 'SalesController::salesOrderAdd/$1');
+        $routes->get('sales-order', 'SalesController::salesOrder');
+        $routes->get('sales-order-delete', 'SalesController::salesOrderDelete');
+        $routes->get('sales-order-delete/(:any)', 'SalesController::salesOrderDeleteProduct/$1');
+
+        $routes->post('sales-detail', 'SalesController::salesDetailSubmit');
+        $routes->get('sales-detail/(:any)', 'SalesController::salesDetail/$1');
+        $routes->get('sales-delete/(:any)', 'SalesController::salesDelete/$1');
     });
 
     // ONLY MANAGER

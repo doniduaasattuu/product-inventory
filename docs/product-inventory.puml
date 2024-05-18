@@ -79,25 +79,36 @@
     '     * name VARCHAR(256)
     ' }
 
-    ' entity sale_details {
-    '     * id VARCHAR(25) <<PK>> uniqid('pcd_)
-    '     --
-    '     * product_id VARCHAR(25) <<FK>>
-    '     * product_name
-    '     * product_category
-    '     * quantity INT(10)
-    ' }
+    entity sales {
+        * id VARCHAR(25) <<PK>> uniqid('sl_')
+        --
+        * admin_email VARCHAR(100) <<FK>>
+        * total INT(10)
+          created_at TIMESTAMP CURRENT_TIMESTAMP
+          updated_at TIMESTAMP CURRENT_TIMESTAMP          
+    }
 
-    ' entity sales {
-    '     * id VARCHAR(25) <<PK>> uniqid('sl_')
-    '     --
-    '     * sale_detail VARCHAR(25) <<FK>>
-    '       customer INT(10) <<FK>>
-    '     * admin_email VARCHAR(100) <<FK>>
-    '       status ENUM ['Pending', 'Sent']
-    '       created_at TIMESTAMP NULL
-    '       updated_at TIMESTAMP CURRENT_TIMESTAMP
-    ' }
+    entity sale_details {
+        * id INT(10) <<PK>> AUTO INCREMENT
+        --
+        * sale_id VARCHAR(25) <<FK>>
+        * product_id VARCHAR(25) <<FK>>
+        * product_name VARCHAR(100) 
+          product_category VARCHAR(50)
+        * product_price(10) UNSIGNED
+        * quantity INT(10) UNSIGNED
+        * sub_total INT(10) UNSIGNED
+    }
+
+    entity sale_orders {
+        * id INT(10) <<PK>> AUTO INCREMENT
+        --
+        * product_id VARCHAR(25) <<FK>>
+        * product_name VARCHAR(100)
+          product_category VARCHAR(50)
+        * product_price INT(10) UNSIGNED
+        * quantity INT(10) UNSIGNED
+    }
 
    roles }|--|| users : have
    categories }|--|| products : have
@@ -105,7 +116,11 @@
    suppliers ||--|{ purchases : supplied
    purchases ||--|{ purchase_details : have
    users ||--|{ purchases : create
-   products }|--|| purchase_details : have
-   products }|--|| purchase_orders
+   products }|--|| purchase_details : in
+   products }|--|| purchase_orders : in
+   products }|--|| sale_details : in
+   sales ||--|{ sale_details : have
+   users ||--|{ sales : create
+   products }|--|| sale_orders : in
 
 @enduml
