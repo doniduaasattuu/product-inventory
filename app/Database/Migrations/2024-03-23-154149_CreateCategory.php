@@ -11,7 +11,7 @@ class CreateCategory extends Migration
         $this->forge->addField([
             'category' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 256,
+                'constraint'     => 50,
                 'null'           => false,
             ],
         ]);

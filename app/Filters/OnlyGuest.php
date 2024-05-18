@@ -25,7 +25,9 @@ class OnlyGuest implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (session()->get('user')) {
+        $user = session()->get('user');
+
+        if ($user) {
             return redirect()->route('/');
         }
         return null;

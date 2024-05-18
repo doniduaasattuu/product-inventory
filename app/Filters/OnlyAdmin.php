@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class OnlyManager implements FilterInterface
+class OnlyAdmin implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -25,14 +25,7 @@ class OnlyManager implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        $user = session()->get('user');
-
-        if (null != $user && $user->role == 'Manager') {
-            return null;
-        }
-
-        session()->setFlashdata('modal', ['message' => "Your'e not allowed."]);
-        return redirect('/');
+        //
     }
 
     /**
@@ -49,6 +42,13 @@ class OnlyManager implements FilterInterface
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
+        $user = session()->get('user');
+
+        if (null != $user && (($user->role == 'Admin') || ($user->role == 'Manager'))) {
+            return null;
+        }
+
+        session()->setFlashdata('modal', ['message' => "Your'e not authorized."]);
+        return redirect()->back();
     }
 }

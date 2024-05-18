@@ -4,7 +4,7 @@
 
 <div class="mb-4">
     <h2 class="fw-semibold"><?= $title ?? '' ?></h2>
-    <?= view('components/breadcrumb', ['action' => 'Categories']) ?>
+    <?= view('components/breadcrumb', ['base' => ['link' => '/', 'name' => 'Home'], 'action' => 'Categories']) ?>
 </div>
 
 <?= view('components/alert') ?>

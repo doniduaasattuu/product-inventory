@@ -78,16 +78,8 @@ class UserController extends BaseController
             $user = $builder->get()->getFirstRow();
 
             if (!is_null($user) && $password == $user->password) {
-                session()->set('user', [
-                    'id' => $user->id ?? null,
-                    'name' => $user->name ?? null,
-                    'email' => $user->email ?? null,
-                    'phone_number' => $user->phone_number ?? null,
-                    'role' => $user->role ?? null,
-                    'created_at' => $user->created_at ?? null,
-                    'updated_at' => $user->updated_at ?? null,
-                ]);
-                return $this->response->redirect('/');
+                session()->set('user', $user);
+                return redirect('/');
             } else {
                 session()->setFlashData('alert', ['message' => 'The email or password is wrong.']);
                 return redirect()->back()->withInput();
@@ -100,12 +92,10 @@ class UserController extends BaseController
         $db = db_connect();
         $columns = $db->getFieldData('users');
 
-        $user = model('User')->find(session('user')['id']);
-
-        return view('profile', [
+        return view('user/profile', [
             'title' => 'My profile',
             'columns' => $columns,
-            'user' => $user,
+            'user' => (array) session()->get('user'),
         ]);
     }
 

@@ -29,21 +29,22 @@
                 </li>
                 <!-- SCANNER -->
 
-                <?php if (session()->get('user')) : ?>
-
+                <?php
+                $user = session()->get('user');
+                if ($user) : ?>
 
                     <!-- TRANSACTION START -->
-                    <?php if (session()->get('user')['role'] == 'Admin' || session()->get('user')['role'] == 'Manager') : ?>
+                    <?php if ($user->role == 'Admin' || 'Manager') : ?>
                         <li class="nav-item dropdown">
                             <a class="text-white nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg class="mb-1 me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
-                                    <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
+                                <svg class="mb-1 me-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
                                 </svg>
                                 Transactions
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 <li>
-                                    <a class="text-light dropdown-item" href="/logout">
+                                    <a class="text-light dropdown-item" href="/purchase">
                                         <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                                             <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
                                             <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
@@ -52,7 +53,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="/profile">
+                                    <a class="dropdown-item" href="/sales">
                                         <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 16 16">
                                             <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1zm1 12h2V2h-2zm-3 0V7H7v7zm-5 0v-3H2v3z" />
                                         </svg>
@@ -64,8 +65,8 @@
                     <?php endif; ?>
                     <!-- TRANSACTION END -->
 
-                    <!-- USERS TABLE START -->
-                    <?php if (session()->get('user')['role'] == 'Manager') : ?>
+                    <!-- USERS MENU START -->
+                    <?php if ($user->role == 'Manager') : ?>
                         <li class="nav-item me-2 me-md-3">
                             <a id="navbar_trends" class="text-white nav-link" href="/users">
                                 <svg class="mb-1 me-1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -75,25 +76,24 @@
                             </a>
                         </li>
                     <?php endif; ?>
-                    <!-- USERS TABLE END -->
-
+                    <!-- USERS MENU END -->
                 <?php endif; ?>
 
-                <!-- USER -->
+                <!-- USER INFORMATION -->
                 <li class="nav-item dropdown">
                     <a class="text-white nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php if (session()->get('user')) : ?>
+                        <?php if ($user) : ?>
                             <svg class="mb-1 me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                                 <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
                             </svg>
-                            <?= session()->get('user')['name'] ?>
+                            <?= $user->name ?>
                         <?php else : ?>
                             Hello, guest
                         <?php endif; ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
-                        <?php if (session()->get('user')) : ?>
+                        <?php if ($user) : ?>
                             <li>
                                 <a class="dropdown-item" href="/profile">
                                     <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -131,9 +131,9 @@
                                 </a>
                             </li>
                         <?php endif; ?>
-
                     </ul>
                 </li>
+                <!-- USER INFORMATION -->
             </ul>
         </div>
     </div>

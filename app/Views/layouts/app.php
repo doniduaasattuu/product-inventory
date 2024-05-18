@@ -14,6 +14,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Own script -->
+
+    <!-- GOOGLE FONT -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"> -->
+    <!-- GOOGLE FONT -->
     <script>
         function modalConfirm(url) {
             let modal_url = document.getElementById("modal_url");
@@ -79,6 +85,7 @@
 
     <?= view('components/navbar') ?>
     <?= view('components/modal-confirm') ?>
+    <?= view('components/modal') ?>
 
     <div class="container-md">
         <div class="py-4">
