@@ -134,7 +134,7 @@ class ProductController extends BaseController
                 if ($image->isValid()) {
                     $product_name = $product_id . '.' . strtolower($image->getClientExtension());
                     $image->move('images/products', $product_name);
-                    $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')['email']]);
+                    $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')->email]);
                 }
 
                 $product->update($product_id, $validated);
@@ -197,7 +197,7 @@ class ProductController extends BaseController
         if ($image->isValid()) {
             $product_name = $validated['id'] . '.' . strtolower($image->getClientExtension());
             $image->move('images/products', $product_name);
-            $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')['email']]);
+            $validated = array_merge($validated, ['attachment' => $product_name, 'admin_email' => session()->get('user')->email]);
         }
 
         $product = model('Product');

@@ -57,7 +57,7 @@ class CreatePurchaseDetail extends Migration
 
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('purchase_id', 'purchases', 'id');
-        $this->forge->addForeignKey('product_id', 'products', 'id');
+        $this->forge->addForeignKey('product_id', 'products', 'id', onUpdate: 'CASCADE', onDelete: 'CASCADE');
         $this->forge->createTable('purchase_details');
     }
 
