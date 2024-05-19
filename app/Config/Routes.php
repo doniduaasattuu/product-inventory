@@ -10,9 +10,12 @@ $routes->get('/current', function () {
     return response()->setJSON(session()->get('user'));
 });
 
+// HOME
 $routes->get('/', 'ProductController::index');
+
 // SCANNER
 $routes->get('scanner', 'HomeController::scanner', ['as' => 'scanner']);
+
 // SEARCH
 $routes->post('search', 'HomeController::search');
 
@@ -35,6 +38,18 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     $routes->get('profile', 'UserController::profile', ['as' => 'profile']);
     $routes->post('profile', 'UserController::updateProfile');
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
+
+    // PRODUCT
+    $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
+    $routes->post('product-update', 'ProductController::updateProduct');
+    $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
+    $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
+    $routes->post('product-new', 'ProductController::insertProduct');
+
+    // CATEGORY
+    $routes->get('categories', 'CategoryController::categories');
+    $routes->post('category-new', 'CategoryController::insertCategory');
+    $routes->get('category-delete/(:any)', 'CategoryController::categoryDelete/$1');
 
     // ONLY ADMIN OR MANAGER
     $routes->group('', ['filter' => 'onlyadmin'], function ($routes) {
@@ -68,17 +83,6 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
         $routes->get('user-delete/(:any)', 'UserController::userDelete/$1');
         $routes->get('user-reset/(:any)', 'UserController::userReset/$1');
         $routes->get('users', 'UserController::users', ['as' => 'users']);
+        $routes->post('user-role-assignment', 'UserController::userRoleAssignment');
     });
-
-    // PRODUCT
-    $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
-    $routes->post('product-update', 'ProductController::updateProduct');
-    $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
-    $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
-    $routes->post('product-new', 'ProductController::insertProduct');
-
-    // CATEGORY
-    $routes->get('categories', 'CategoryController::categories');
-    $routes->post('category-new', 'CategoryController::insertCategory');
-    $routes->get('category-delete/(:any)', 'CategoryController::categoryDelete/$1');
 });

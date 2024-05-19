@@ -10,7 +10,7 @@
     <div class="alert alert-warning" role="alert">You're not logged in yet, <a class="alert-link fw-semibold" href="/login">login here.</a></div>
 <?php endif; ?>
 
-<?php if ($products != null && count($products) > 0) : ?>
+<?php if (count($products) > 0) : ?>
     <div class="overflow-y-auto">
         <div style="min-width: 1300px">
 

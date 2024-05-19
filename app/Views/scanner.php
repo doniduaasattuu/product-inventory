@@ -36,8 +36,8 @@
         "reader", {
             fps: 10,
             qrbox: {
-                width: 250,
-                height: 250
+                width: 300,
+                height: 300
             }
         }, false);
 

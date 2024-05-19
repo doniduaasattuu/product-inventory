@@ -244,18 +244,25 @@ class PurchaseController extends BaseController
 
         $db = db_connect();
 
-        $db->transStart();
-        $db->table('purchases')->insert([
-            'id' => $purchase_id,
-            'supplier' => null,
-            'status' => 'Pending',
-            'admin_email' => session()->get('user')->email,
-            'total' => $total,
-        ]);
+        // return response()->setJSON($data);
 
-        $db->table('purchase_details')->insertBatch($data);
-        $db->table('purchase_orders')->truncate();
-        $db->transComplete();
+        try {
+            $db->transStart();
+            $db->table('purchases')->insert([
+                'id' => $purchase_id,
+                'supplier' => null,
+                'status' => 'Pending',
+                'admin_email' => session()->get('user')->email,
+                'total' => $total,
+            ]);
+
+            $db->table('purchase_details')->insertBatch($data);
+            $db->table('purchase_orders')->truncate();
+            $db->transComplete();
+        } catch (DatabaseException $error) {
+            session()->setFlashdata('modal', ['message' => $error->getMessage()]);
+            return redirect('purchase');
+        }
 
         if ($db->transStatus() === false) {
             $db->transRollback();

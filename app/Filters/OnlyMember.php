@@ -28,7 +28,7 @@ class OnlyMember implements FilterInterface
         $user = session()->get('user');
 
         if (!$user) {
-            // return redirect()->route('login');
+            return redirect()->route('login');
         }
         return null;
     }

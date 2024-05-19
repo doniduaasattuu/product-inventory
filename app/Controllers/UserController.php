@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\RawSql;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -101,7 +102,7 @@ class UserController extends BaseController
 
     public function updateProfile()
     {
-        $user_id = session()->get('user')['id'];
+        $user_id = session()->get('user')->id;
         $validation = \Config\Services::validation();
 
         $validation->setRules([
@@ -177,12 +178,41 @@ class UserController extends BaseController
         $user = $db->find($user_id);
 
         if (!is_null($user)) {
-            $db->where('id', $user_id)->delete();
-            session()->setFlashdata('alert', ['message' => 'User successfully deleted.', 'variant' => 'alert-success']);
-            return redirect()->back();
+            try {
+                $db->where('id', $user_id)->delete();
+                session()->setFlashdata('alert', ['message' => 'User successfully deleted.', 'variant' => 'alert-success']);
+                return redirect()->back();
+            } catch (DatabaseException $error) {
+                session()->setFlashdata('alert', ['message' => $error->getMessage(), 'variant' => 'alert-danger']);
+                return redirect()->back();
+            }
         } else {
             session()->setFlashdata('alert', ['message' => 'User not found.', 'variant' => 'alert-info']);
             return redirect()->back();
+        }
+    }
+
+    public function userRoleAssignment()
+    {
+        if ($this->request->isAJAX()) {
+
+            $user_id = $this->request->getJsonVar('user_id');
+            $new_request_role = $this->request->getJsonVar('role');
+
+            $user = model('User')->find($user_id);
+
+            if ($user && $new_request_role != null) {
+
+                model('User')->update($user_id, ['role' => $new_request_role ?? null]);
+
+                return response()->setJSON([
+                    'response' => true
+                ]);
+            } else {
+                return response()->setJSON([
+                    'response' => false
+                ]);
+            }
         }
     }
 
