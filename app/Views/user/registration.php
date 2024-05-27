@@ -9,19 +9,19 @@
 <form action="/registration" method="POST">
 
     <div class="mb-3">
-        <?= view('components/label', ['label' => 'name']) ?>
+        <?= view('components/label', ['label' => 'name *']) ?>
         <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'name']) ?>
     </div>
 
     <div class="mb-3">
-        <?= view('components/label', ['label' => 'email']) ?>
+        <?= view('components/label', ['label' => 'email *']) ?>
         <?= view('components/input-email', ['id' => 'email', 'name' => 'email', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'email']) ?>
     </div>
 
     <div class="mb-3">
-        <?= view('components/label', ['label' => 'password']) ?>
+        <?= view('components/label', ['label' => 'password *']) ?>
         <?= view('components/input-password', ['id' => 'password', 'name' => 'password', 'required' => 'required']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'password']) ?>
     </div>
@@ -30,6 +30,12 @@
         <?= view('components/label', ['label' => 'phone_number']) ?>
         <?= view('components/input-number', ['id' => 'phone_number', 'name' => 'phone_number', 'maxlength' => '13']) ?>
         <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'phone_number']) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= view('components/label', ['label' => 'registration_code *']) ?>
+        <?= view('components/input-text', ['id' => 'registration_code', 'name' => 'registration_code', 'required' => false, 'maxlength' => null]) ?>
+        <?= view('components/input-error', ['validation' => $validation ?? null, 'field' => 'registration_code']) ?>
     </div>
 
     <?= view('components/button-primary', ['context' => 'Submit']) ?>

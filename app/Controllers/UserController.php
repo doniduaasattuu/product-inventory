@@ -20,12 +20,22 @@ class UserController extends BaseController
     {
         $validation = \Config\Services::validation();
 
-        $validation->setRules([
-            'name' => ['trim', 'required', 'min_length[3]', 'max_length[30]', 'alpha_space'],
-            'email' => ['trim', 'required', 'valid_email'],
-            'password' => ['trim', 'required', 'alpha_numeric_punct'],
-            'phone_number' => ['trim', 'permit_empty', 'is_natural'],
-        ]);
+        $registration_code = getenv('REGISTRATION_CODE') ?? 'rahasia';
+
+        $validation->setRules(
+            [
+                'name' => ['trim', 'required', 'min_length[3]', 'max_length[30]', 'alpha_space'],
+                'email' => ['trim', 'required', 'valid_email'],
+                'password' => ['trim', 'required', 'alpha_numeric_punct'],
+                'phone_number' => ['trim', 'permit_empty', 'is_natural'],
+                'registration_code' => ['trim', 'required', static fn ($value) => $value === $registration_code],
+            ],
+            [
+                'registration_code' => [
+                    2 => 'The registration_code is wrong.',
+                ],
+            ]
+        );
 
         if (!$validation->withRequest($this->request)->run()) {
             return view('user/registration', [
