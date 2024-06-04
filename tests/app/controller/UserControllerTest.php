@@ -16,7 +16,7 @@ class UserControllerTest extends CIUnitTestCase
         $migration = \Config\Services::migrations();
         $migration->setNamespace('App');
         $migration->latest();
-        $this->seed('Seed');
+        $this->seed('App\Database\Seeds\Seed');
     }
 
     protected function setUp(): void

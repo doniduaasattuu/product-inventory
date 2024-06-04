@@ -2,6 +2,7 @@
 
 namespace App\Database\Seeds;
 
+use Carbon\Carbon;
 use CodeIgniter\Database\Seeder;
 
 class PurchaseSeeder extends Seeder
@@ -14,9 +15,9 @@ class PurchaseSeeder extends Seeder
                 'supplier' => null,
                 'status' => 'Approved',
                 'admin_email' => 'anggigitacahyani@gmail.com',
-                'total' => 62099000,
-                'created_at' => '2024-05-01 21:47:12',
-                'updated_at' => '2024-05-01 21:47:12',
+                'total' => 35099000,
+                'created_at' => Carbon::now()->addDays(-7)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-7)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8abee9204',
@@ -24,8 +25,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'anggigitacahyani@gmail.com',
                 'total' => 17000000,
-                'created_at' => '2024-05-02 22:12:23',
-                'updated_at' => '2024-05-02 22:12:23',
+                'created_at' => Carbon::now()->addDays(-6)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-6)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8ae006e76',
@@ -33,8 +34,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'shintiakartikasari22@gmail.com',
                 'total' => 21000000,
-                'created_at' => '2024-05-03 22:12:23',
-                'updated_at' => '2024-05-03 22:12:23',
+                'created_at' => Carbon::now()->addDays(-5)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-5)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8af7d8341',
@@ -42,8 +43,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'tiaraanggreani@gmail.com',
                 'total' => 12000000,
-                'created_at' => '2024-05-04 22:12:23',
-                'updated_at' => '2024-05-04 22:12:23',
+                'created_at' => Carbon::now()->addDays(-4)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-4)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8af7d85ba',
@@ -51,8 +52,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'tiaraanggreani@gmail.com',
                 'total' => 19000000,
-                'created_at' => '2024-05-06 22:12:23',
-                'updated_at' => '2024-05-06 22:12:23',
+                'created_at' => Carbon::now()->addDays(-3)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-3)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8b1bd065b',
@@ -60,8 +61,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'shintiakartikasari22@gmail.com',
                 'total' => 15000000,
-                'created_at' => '2024-05-07 22:12:23',
-                'updated_at' => '2024-05-07 22:12:23',
+                'created_at' => Carbon::now()->addDays(-2)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-2)->toDateTimeString(),
             ],
             [
                 'id' => 'pc_663f8bd74cc38',
@@ -69,8 +70,8 @@ class PurchaseSeeder extends Seeder
                 'status' => 'Done',
                 'admin_email' => 'tiaraanggreani@gmail.com',
                 'total' => 19000000,
-                'created_at' => '2024-05-08 22:12:23',
-                'updated_at' => '2024-05-08 22:12:23',
+                'created_at' => Carbon::now()->addDays(-1)->toDateTimeString(),
+                'updated_at' => Carbon::now()->addDays(-1)->toDateTimeString(),
             ],
         ];
 

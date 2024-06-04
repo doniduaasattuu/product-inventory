@@ -20,7 +20,7 @@ class UserController extends BaseController
     {
         $validation = \Config\Services::validation();
 
-        $registration_code = getenv('REGISTRATION_CODE') ?? 'rahasia';
+        $registration_code = getenv('REGISTRATION_CODE');
 
         $validation->setRules(
             [

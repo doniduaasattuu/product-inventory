@@ -17,9 +17,6 @@ final class ViewTest extends CIUnitTestCase
     use DatabaseTestTrait;
     use FeatureTestTrait;
 
-    use FeatureTestTrait;
-    use DatabaseTestTrait;
-
     private function migrate()
     {
         $migration = \Config\Services::migrations();
@@ -85,7 +82,7 @@ final class ViewTest extends CIUnitTestCase
         $result->assertSee('Category');
         $result->assertSee('Price');
         $result->assertSee('Stock');
-        $result->assertSee('26');
+        $result->assertSee('Beras');
         $result->assertSee('Updated at');
         $result->assertStatus(200);
     }
@@ -105,7 +102,7 @@ final class ViewTest extends CIUnitTestCase
         $result->assertSee('Price');
         $result->assertSee('Stock');
         $result->assertSee('Updated at');
-        $result->assertDontSee('26');
+        $result->assertDontSee('Beras');
         $result->assertStatus(200);
     }
 

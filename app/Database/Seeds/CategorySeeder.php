@@ -30,6 +30,9 @@ class CategorySeeder extends Seeder
             [
                 'category' => 'Photography',
             ],
+            [
+                'category' => 'Fashion',
+            ],
 
         ];
 
