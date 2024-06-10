@@ -40,12 +40,7 @@ final class HomeControllerTest extends CIUnitTestCase
         $this->migrate();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->migrate();
-    }
-
+    // UNIT TEST
     public function testSearchFound()
     {
         $user = $this->loggedIn('anggigitacahyani@gmail.com');

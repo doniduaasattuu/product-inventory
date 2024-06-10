@@ -40,12 +40,7 @@ final class ProductControllerTest extends CIUnitTestCase
         $this->migrate();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->migrate();
-    }
-
+    // UNIT TEST
     public function testProductIndex()
     {
         $user = $this->loggedIn('anggigitacahyani@gmail.com');
@@ -101,7 +96,7 @@ final class ProductControllerTest extends CIUnitTestCase
 
     public function testPostNewProduct()
     {
-        $this->markTestIncomplete('Error: image is too large of a file.');
+        // $this->markTestIncomplete('Error: image is too large of a file.');
         $user = $this->loggedIn('anggigitacahyani@gmail.com');
 
         // $image = new UploadedFile(TESTPATH . 'mocks/test_image.png', 'test_image.png', 'image/png', 1024);
@@ -152,7 +147,7 @@ final class ProductControllerTest extends CIUnitTestCase
 
     public function testPostUpdateProduct()
     {
-        $this->markTestIncomplete('Error: image is too large of a file.');
+        // $this->markTestIncomplete('Error: image is too large of a file.');
         $user = $this->loggedIn('anggigitacahyani@gmail.com');
 
         $result = $this

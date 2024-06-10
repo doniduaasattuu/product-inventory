@@ -40,12 +40,6 @@ final class CategoryControllerTest extends CIUnitTestCase
         $this->migrate();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->migrate();
-    }
-
     // CATEGORIES
     public function testCategoryPage()
     {

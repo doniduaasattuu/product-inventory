@@ -198,12 +198,18 @@ class PurchaseController extends BaseController
 
         $purchase_orders = model('PurchaseOrder')->findAll();
 
-        return view('/purchase/order', [
-            'title' => 'Purchase order',
-            'purchase_order_column' => $purchase_order_column,
-            'purchase_orders' => $purchase_orders,
-            'action' => '/purchase-detail',
-        ]);
+        if (!empty($purchase_orders)) {
+
+            return view('/purchase/order', [
+                'title' => 'Purchase order',
+                'purchase_order_column' => $purchase_order_column,
+                'purchase_orders' => $purchase_orders,
+                'action' => '/purchase-detail',
+            ]);
+        } else {
+            session()->setFlashdata('alert', ['message' => "Purchase order not found.", 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
     }
 
     public function purchaseOrderDeleteProduct($product_id)

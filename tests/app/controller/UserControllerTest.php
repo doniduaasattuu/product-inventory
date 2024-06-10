@@ -25,12 +25,6 @@ class UserControllerTest extends CIUnitTestCase
         $this->migrate();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->migrate();
-    }
-
     // LOGIN
     public function testLoginSuccess()
     {

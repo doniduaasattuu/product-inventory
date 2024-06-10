@@ -31,12 +31,7 @@ final class ViewTest extends CIUnitTestCase
         $this->migrate();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->migrate();
-    }
-
+    // UNIT TEST
     function testLoginView()
     {
         $result = $this->get('/login');
