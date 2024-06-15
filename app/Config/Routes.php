@@ -10,6 +10,10 @@ $routes->get('/current', function () {
     return response()->setJSON(session()->get('user'));
 });
 
+$routes->get('/info', function () {
+    return phpinfo();
+});
+
 // HOME
 $routes->get('/', 'ProductController::index');
 
@@ -39,20 +43,21 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
     $routes->post('profile', 'UserController::updateProfile');
     $routes->get('logout', 'UserController::logout', ['as' => 'logout']);
 
-    // PRODUCT
-    $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
-    $routes->post('product-update', 'ProductController::updateProduct');
-    $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
-    $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
-    $routes->post('product-new', 'ProductController::insertProduct');
-
-    // CATEGORY
-    $routes->get('categories', 'CategoryController::categories');
-    $routes->post('category-new', 'CategoryController::insertCategory');
-    $routes->get('category-delete/(:any)', 'CategoryController::categoryDelete/$1');
-
     // ONLY ADMIN OR MANAGER
     $routes->group('', ['filter' => 'onlyadmin'], function ($routes) {
+        // PRODUCT
+        $routes->get('product-update/(:any)', 'ProductController::productUpdate/$1');
+        $routes->post('product-update', 'ProductController::updateProduct');
+        $routes->get('product-delete/(:any)', 'ProductController::productDelete/$1');
+        $routes->get('product-new', 'ProductController::productNew', ['as' => 'product-new']);
+        $routes->post('product-new', 'ProductController::insertProduct');
+
+        // CATEGORY
+        $routes->get('categories', 'CategoryController::categories');
+        $routes->post('category-new', 'CategoryController::insertCategory');
+        $routes->get('category-delete/(:any)', 'CategoryController::categoryDelete/$1');
+
+        // PURCHASE
         $routes->get('purchase', 'PurchaseController::index');
         $routes->get('purchase-new', 'PurchaseController::purchaseNew');
         $routes->get('purchase-order/(:any)', 'PurchaseController::purchaseOrderAdd/$1');
@@ -66,6 +71,7 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
         $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
         $routes->post('purchase-update', 'PurchaseController::purchaseUpdateEnd');
 
+        // SALES
         $routes->get('sales', 'SalesController::index');
         $routes->get('sales-new', 'SalesController::salesNew');
         $routes->get('sales-order/(:any)', 'SalesController::salesOrderAdd/$1');

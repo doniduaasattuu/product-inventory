@@ -10,6 +10,9 @@ class RoleSeeder extends Seeder
     {
         $data = [
             [
+                'role' => null,
+            ],
+            [
                 'role' => 'Admin',
             ],
             [

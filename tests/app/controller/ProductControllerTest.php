@@ -3,11 +3,14 @@
 namespace App\Tests\app\controller;
 
 use App\Database\Seeds\Seed;
+use App\Tests\Support\FakeImage;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use Config\Services;
+// use Faker\Provider\Image;
+// use App\Tests\Support\FakeImage;
 
 /**
  * @internal
@@ -99,19 +102,20 @@ final class ProductControllerTest extends CIUnitTestCase
         // $this->markTestIncomplete('Error: image is too large of a file.');
         $user = $this->loggedIn('anggigitacahyani@gmail.com');
 
-        // $image = new UploadedFile(TESTPATH . 'mocks/test_image.png', 'test_image.png', 'image/png', 1024);
-
         $result = $this
             ->withSession([
                 'user' => $user
             ])
-            ->post('/product-new', [
-                'name' => 'Eiger Linden 1.0 liter',
-                'category' => 'Fashion',
-                'price' => '235000',
-                'stock' => '25',
-                'image' => null,
-            ]);
+            ->withBodyFormat('multipart/form-data')
+            ->post(
+                '/product-new',
+                [
+                    'name' => 'Eiger Linden 1.0 liter',
+                    'category' => 'Fashion',
+                    'price' => '235000',
+                    'stock' => '25',
+                ]
+            );
 
         $result->assertStatus(302);
         $result->assertRedirect('/product-new');

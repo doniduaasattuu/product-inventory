@@ -119,8 +119,12 @@
     let roles = document.getElementsByClassName('role');
     let modalAssign = new bootstrap.Modal(document.getElementById('modal_assign'), {});
     let modal_assign_message = document.getElementById('modal_assign_message');
+    let current_roles = [];
 
     for (let i = 0; i < roles.length; i++) {
+
+        current_roles.push(roles[i].value);
+
         roles[i].onchange = () => {
 
             let new_role = roles[i].value;
@@ -142,7 +146,15 @@
                 const content = await roleResponse.json();
 
                 if (content.response) {
-                    modal_assign_message.textContent = `User successfully assigned as ${new_role}.`
+
+                    let message = `User successfully assigned as ${new_role != '' ? new_role : 'regular member'}.`
+
+                    if (content.message !== undefined) {
+                        message = content.message;
+                        roles[i].value = current_roles[i];
+                    }
+
+                    modal_assign_message.textContent = message;
                     modalAssign.show();
                 } else {
                     modal_assign_message.textContent = 'Cannot add or update a child row.'

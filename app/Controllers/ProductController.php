@@ -184,7 +184,7 @@ class ProductController extends BaseController
             'category' => ['required'],
             'price' => ['permit_empty'],
             'stock' => ['permit_empty'],
-            'image' => ['max_size[image,2000]', 'is_image[image]'],
+            'image' => ['max_size[image,10]', 'is_image[image]'],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {

@@ -211,16 +211,24 @@ class UserController extends BaseController
 
             $user = model('User')->find($user_id);
 
-            if ($user && $new_request_role != null) {
+            if ($user) {
 
-                model('User')->update($user_id, ['role' => $new_request_role ?? null]);
+                if ($user['email'] == 'doni.duaasattuu@gmail.com') {
+                    return response()->setJSON([
+                        'response' => true,
+                        'message' => 'Cannot unassign special user from manager.'
+                    ]);
+                } else {
 
-                return response()->setJSON([
-                    'response' => true
-                ]);
+                    model('User')->update($user_id, ['role' => $new_request_role ?? null]);
+
+                    return response()->setJSON([
+                        'response' => true,
+                    ]);
+                }
             } else {
                 return response()->setJSON([
-                    'response' => false
+                    'response' => false,
                 ]);
             }
         }

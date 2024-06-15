@@ -13,7 +13,7 @@
 
     <div class="mb-3">
         <?= view('components/label', ['label' => 'name']) ?>
-        <?= view('components/input-text', ['id' => 'name', 'name' => 'name', 'required' => 'required']) ?>
+        <?= view('components/input-text', ['id' => 'name', 'name' => 'name']) ?>
         <?= view('components/input-error-session', ['field' => 'name']) ?>
     </div>
 
