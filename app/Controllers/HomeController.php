@@ -15,6 +15,11 @@ class HomeController extends BaseController
 
         $product = model('Product')->find($id);
 
+        if ($id == '' || $id == null || !is_null($id) ? strlen($id ?? '') < 13 : null) {
+            session()->setFlashdata('alert', ['message' => "The product id entered is invalid.", 'variant' => 'alert-info']);
+            return redirect()->back();
+        }
+
         if (null != $product) {
 
             $view = 'products/product-detail';
