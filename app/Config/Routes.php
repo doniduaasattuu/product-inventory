@@ -67,9 +67,6 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
 
         $routes->post('purchase-detail', 'PurchaseController::purchaseDetailSubmit');
         $routes->get('purchase-detail/(:any)', 'PurchaseController::purchaseDetail/$1');
-        $routes->get('purchase-update/(:any)', 'PurchaseController::purchaseUpdate/$1');
-        $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
-        $routes->post('purchase-update', 'PurchaseController::purchaseUpdateEnd');
 
         // SALES
         $routes->get('sales', 'SalesController::index');
@@ -90,5 +87,14 @@ $routes->group('/', ['filter' => 'onlymember'], function ($routes) {
         $routes->get('user-reset/(:any)', 'UserController::userReset/$1');
         $routes->get('users', 'UserController::users', ['as' => 'users']);
         $routes->post('user-role-assignment', 'UserController::userRoleAssignment');
+
+        $routes->get('purchase-update/(:any)', 'PurchaseController::purchaseUpdate/$1');
+        $routes->get('purchase-delete/(:any)', 'PurchaseController::purchaseDelete/$1');
+        $routes->post('purchase-update', 'PurchaseController::purchaseUpdateEnd');
+
+        $routes->get('order-item-delete/(:any)/(:any)', 'PurchaseController::orderItemDelete/$1/$2');
+
+        // UPDATE ORDER AJAX
+        $routes->post('/update-order-ajax', 'PurchaseController::updateOrderAjax');
     });
 });

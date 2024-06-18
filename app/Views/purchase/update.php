@@ -72,7 +72,7 @@
 <section>
     <h4 class="fw-semibold">Purchase Detail</h4>
     <div class="overflow-y-auto">
-        <div style="min-width: 1300px">
+        <div style="min-width: 1200px">
 
             <table class="table table-hover">
                 <thead>
@@ -86,6 +86,8 @@
                             <?php endif; ?>
 
                         <?php endforeach; ?>
+
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,11 +102,51 @@
                             <?php foreach ($purchase_detail_column as $column) : ?>
 
                                 <?php if ($column->name === 'id') : continue; ?>
+
+                                <?php elseif ($column->name === 'purchase_id') : ?>
+                                    <td style="width: 150px;" class="<?= $column->name ?>" scope="col"><?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?></td>
+
+                                <?php elseif ($column->name === 'product_id') : ?>
+                                    <td style="width: 120px;" class="<?= $column->name ?>" scope="col"><?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?></td>
+
+                                <?php elseif ($column->name === 'product_category') : ?>
+                                    <td style="width: 150px;" class="<?= $column->name ?>" scope="col"><?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?></td>
+
+                                <?php elseif ($column->name === 'product_price') : ?>
+                                    <td style="width: 120px;" scope="col">
+                                        <input class="form-control p-0 px-1 m-0 <?= $column->name ?>" type="number" id="qty_<?= $detail[$column->name] ?>" value="<?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?>">
+                                    </td>
+
+                                <?php elseif ($column->name === 'quantity') : ?>
+                                    <td style="width: 70px;" scope="col">
+                                        <input item_id=<?= $detail['id'] ?> style="width: 50px;" class="form-control p-0 px-1 m-0 <?= $column->name ?>" type="number" id="qty_<?= $detail[$column->name] ?>" value="<?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?>">
+                                    </td>
+
+                                <?php elseif ($column->name === 'sub_total') : ?>
+                                    <td style="width: 120px;" scope="col">
+                                        <input readonly class="form-control p-0 px-1 m-0 <?= $column->name ?>" type="number" id="qty_<?= $detail[$column->name] ?>" value="<?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?>">
+                                    </td>
+
+                                <?php elseif ($column->name === 'sub_total') : ?>
+                                    <td style="width: 120px;" scope="col">
+                                        <input readonly class="form-control p-0 px-1 m-0 <?= $column->name ?>" type="number" id="qty_<?= $detail[$column->name] ?>" value="<?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?>">
+                                    </td>
+
                                 <?php else : ?>
-                                    <td scope="col"><?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?></td>
+                                    <td class="<?= $column->name ?>" scope="col"><?= ucfirst(str_replace('_', ' ', $detail[$column->name])) ?></td>
                                 <?php endif; ?>
 
                             <?php endforeach ?>
+
+                            <!-- DELETE -->
+                            <td class="text-center" style="width: 40px">
+                                <button data-bs-toggle="modal" data-bs-target="#modal_confirm" class="btn p-0 m-0" onclick="return modalConfirm('/order-item-delete/<?= $detail['id'] ?>/<?= $purchase_id ?>')">
+                                    <svg class="me-1 mb-1" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#dc3545" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>
                     <?php
                         $total += $detail['sub_total'];
@@ -120,12 +162,13 @@
                             <?php elseif ($column->name === 'quantity') : ?>
                                 <th>Total</th>
                             <?php elseif ($column->name === 'sub_total') : ?>
-                                <td><?= $total ?></td>
+                                <td><input readonly style="width: 120px;" class="form-control p-0 px-1 m-0 quantity" id="total_order" type="number" value="<?= $total ?>"></td>
                             <?php else : ?>
                                 <td></td>
                             <?php endif; ?>
 
                         <?php endforeach ?>
+
                     </tr>
 
                 </tbody>
@@ -183,6 +226,62 @@
         if (status.value == 'Done') {
             modalDone.show();
         }
+    }
+
+    // =============================================
+    let quantities = document.getElementsByClassName('quantity');
+    let products_price = document.getElementsByClassName('product_price');
+    let sub_totals = document.getElementsByClassName('sub_total');
+    let total = document.getElementById('total_order');
+
+    for (let i = 0; i < quantities.length; i++) {
+        quantities[i].onchange = () => {
+            if (quantities[i].value < 1) {
+                quantities[i].value = 1;
+            } else {
+                sub_totals[i].value = products_price[i].value * quantities[i].value;
+            }
+
+            updateTotal();
+
+            let update_purchase_id = "<?= $purchase_id ?>";
+            let update_item_id = quantities[i].getAttribute('item_id');
+            let update_qty = quantities[i].value;
+            let update_sub_total = sub_totals[i].value;
+            let update_total = total.value;
+
+            updatePurchaseAJAX(update_item_id, update_qty, update_sub_total, update_purchase_id, update_total);
+        }
+
+    }
+
+    function updateTotal() {
+        let new_total = 0;
+
+        for (let j = 0; j < sub_totals.length; j++) {
+            new_total += Number(sub_totals[j].value);
+        }
+
+        total.value = new_total;
+        document.getElementById('total').value = new_total;
+    }
+
+    async function updatePurchaseAJAX(item_id, qty, sub_total, purchase_id, total) {
+        const roleResponse = await fetch('/update-order-ajax', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "X-Requested-With": "XMLHttpRequest"
+            },
+            body: JSON.stringify({
+                item_id: item_id,
+                qty: qty,
+                sub_total: sub_total,
+                purchase_id: purchase_id,
+                total: total,
+            }),
+        });
     }
 </script>
 

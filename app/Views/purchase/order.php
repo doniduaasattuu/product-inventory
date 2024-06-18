@@ -177,11 +177,6 @@
     let sub_totals = document.getElementsByClassName('sub_total');
     let total = document.getElementById('total');
 
-    // for (let quantity of quantities) {
-    //     let id = quantity.getAttribute('id').split('_')[1];
-    //     console.log(id);
-    // }
-
     for (let i = 0; i < quantities.length; i++) {
         quantities[i].onchange = () => {
             if (quantities[i].value < 1) {
@@ -192,10 +187,6 @@
 
             updateTotal();
         }
-
-        // console.log(products_price[i]);
-        // console.log(quantities[i]);
-        // console.log(sub_totals[i]);
     }
 
     function updateTotal() {
@@ -208,14 +199,6 @@
 
         total.value = new_total;
     }
-
-    // for (let product_price of products_price) {
-    //     console.log(product_price);
-    // }
-
-    // for (let sub_total of sub_totals) {
-    //     console.log(sub_total);
-    // }
 </script>
 
 <?= $this->endSection('content') ?>

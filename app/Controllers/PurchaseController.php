@@ -145,7 +145,6 @@ class PurchaseController extends BaseController
 
         $product_exist = model('PurchaseOrder')->where('product_id', $product_id)->find();
 
-        // return response()->setJSON($product_exist[0]);
 
         if ($product_exist) {
 
@@ -172,7 +171,6 @@ class PurchaseController extends BaseController
                 'quantity' => 1,
             ];
 
-            // return response()->setJSON($product['price']);
 
             if ($product['price'] <= 0) {
 
@@ -231,7 +229,6 @@ class PurchaseController extends BaseController
     {
         $data_request = $this->request->getPost('data');
         $total_request = $this->request->getPost('total');
-        // return response()->setJSON($total_request);
         $purchase_id = uniqid('pc_');
 
         $total = 0;
@@ -249,8 +246,6 @@ class PurchaseController extends BaseController
         }
 
         $db = db_connect();
-
-        // return response()->setJSON($data);
 
         try {
             $db->transStart();
@@ -313,8 +308,6 @@ class PurchaseController extends BaseController
 
         $purchase = $purchase_model->find($purchase_id);
 
-        // return response()->setJSON($data);
-
         if (isset($data['status']) && $data['status'] == 'Done') {
 
             // UPDATE DATA PRODUCT STOCK FROM PURCHASE ORDER
@@ -344,12 +337,49 @@ class PurchaseController extends BaseController
             session()->setFlashdata('alert', ['message' => 'Successfully update purchase and product stock.', 'variant' => 'alert-success']);
             return redirect()->back();
         } else {
+
             // UPDATE DATA PURCHASE
             $data['updated_at'] = Carbon::now()->toDateTimeString();
             $purchase_model->update($purchase['id'], $data);
 
             session()->setFlashdata('alert', ['message' => 'Successfully updated.', 'variant' => 'alert-success']);
             return redirect()->back();
+        }
+    }
+
+    public function orderItemDelete($id, $purchaseId)
+    {
+        model('PurchaseDetail')->delete($id);
+
+        $total = 0;
+
+        $order_details = model('PurchaseDetail')->where('purchase_id', $purchaseId)->findAll();
+        foreach ($order_details as $detail) {
+            $total += $detail['sub_total'];
+        }
+
+        model('Purchase')->update($purchaseId, ['total' => $total]);
+
+        session()->setFlashdata('alert', ['message' => 'Successfully delete item from order.', 'variant' => 'alert-info']);
+        return redirect()->to("/purchase-update/$purchaseId");
+    }
+
+    public function updateOrderAjax()
+    {
+        if ($this->request->isAJAX()) {
+
+            $item_id = $this->request->getJsonVar('item_id');
+            $qty = $this->request->getJsonVar('qty');
+            $sub_total = $this->request->getJsonVar('sub_total');
+            $purchase_id = $this->request->getJsonVar('purchase_id');
+            $total = $this->request->getJsonVar('total');
+
+            model('PurchaseDetail')->update($item_id, [
+                'quantity' => $qty,
+                'sub_total' => $sub_total,
+            ]);
+
+            model('Purchase')->update($purchase_id, ['total' => $total]);
         }
     }
 }
