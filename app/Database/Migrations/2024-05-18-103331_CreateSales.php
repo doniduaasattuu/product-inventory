@@ -17,7 +17,7 @@ class CreateSales extends Migration
             ],
             'admin_email' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 100,
+                'constraint'     => 50,
                 'null'           => false,
             ],
             'total' => [

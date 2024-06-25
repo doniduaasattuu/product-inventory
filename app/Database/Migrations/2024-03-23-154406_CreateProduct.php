@@ -41,12 +41,12 @@ class CreateProduct extends Migration
             ],
             'attachment' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 100,
+                'constraint'     => 25,
                 'null'           => true,
             ],
             'admin_email' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 100,
+                'constraint'     => 50,
                 'null'           => true,
             ],
             'created_at' => [

@@ -9,10 +9,10 @@
         * id INT(10) <<PK>> AUTO INCREMENT
         --
         * name VARCHAR(100)
-        * email VARCHAR(100) <<unique>>
-        * password VARCHAR(256)
+        * email VARCHAR(50) <<unique>>
+        * password VARCHAR(25)
           phone_number VARCHAR(15)
-          role VARCHAR(50) <<FK>>
+          role VARCHAR(25) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
@@ -28,8 +28,8 @@
           category VARCHAR(50) <<FK>>
           price INT(10) UNSIGNED 0
           stock INT(10) UNSIGNED 0
-          attachment VARCHAR(255) 
-          admin_email VARCHAR(100) <<FK>>
+          attachment VARCHAR(25) 
+          admin_email VARCHAR(50) <<FK>>
           created_at TIMESTAMP NULL
           updated_at TIMESTAMP CURRENT_TIMESTAMP
     }
@@ -37,7 +37,7 @@
     entity suppliers {
         * id INT(10) <<PK>> AUTO INCREMENT
         --
-        * name VARCHAR(256)
+        * name VARCHAR(100)
     }
 
     entity purchases {
@@ -45,7 +45,7 @@
         --
           supplier INT(10) <<FK>>
           status ENUM ['Pending', 'Approved', 'Done']
-        * admin_email VARCHAR(100) <<FK>>
+        * admin_email VARCHAR(50) <<FK>>
         * total INT(10)
           created_at TIMESTAMP CURRENT_TIMESTAMP
           updated_at TIMESTAMP CURRENT_TIMESTAMP
@@ -82,7 +82,7 @@
     entity sales {
         * id VARCHAR(25) <<PK>> uniqid('sl_')
         --
-        * admin_email VARCHAR(100) <<FK>>
+        * admin_email VARCHAR(50) <<FK>>
         * total INT(10)
           created_at TIMESTAMP CURRENT_TIMESTAMP
           updated_at TIMESTAMP CURRENT_TIMESTAMP          

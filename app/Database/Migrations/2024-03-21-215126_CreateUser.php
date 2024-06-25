@@ -23,13 +23,13 @@ class CreateUser extends Migration
             ],
             'email' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 100,
+                'constraint'     => 50,
                 'null'           => false,
                 'unique'         => true,
             ],
             'password' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 256,
+                'constraint'     => 25,
                 'null'           => false,
             ],
             'phone_number' => [
@@ -39,7 +39,7 @@ class CreateUser extends Migration
             ],
             'role' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 50,
+                'constraint'     => 25,
                 'null'           => true,
                 'default'        => null,
             ],

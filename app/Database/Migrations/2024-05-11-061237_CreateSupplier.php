@@ -17,7 +17,7 @@ class CreateSupplier extends Migration
             ],
             'name' => [
                 'type'           => 'VARCHAR',
-                'constraint'     => 256,
+                'constraint'     => 100,
                 'null'           => false,
             ],
         ]);
